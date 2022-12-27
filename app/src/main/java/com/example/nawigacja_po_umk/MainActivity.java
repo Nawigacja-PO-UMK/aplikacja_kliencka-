@@ -71,7 +71,8 @@ public class MainActivity extends AppCompatActivity{
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
+        //uruchomie jak bedziemy mieli serwer i skończony model od marcina
+       /// pozycja.odczytaj_pozycje(mapa.loadKml.znacznik);
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -87,4 +88,8 @@ public class MainActivity extends AppCompatActivity{
             mapa.wczytaj_nowa_mape(mapa.level()-1);
     }
 
+    public void trasowanie(View view)
+    {
+
+    }
 }

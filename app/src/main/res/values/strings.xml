@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Nawigacja_po_UMK</string>
+    <string name="gdzie_chcesz_i">Gdzie chcesz iść</string>
+    <string name="go">Go</string>
+    <string name="pomieszczenie">Pomieszczenie..</string>
+    <string name="up">UP</string>
+    <string name="down">Down</string>
 </resources>
