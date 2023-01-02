@@ -9,12 +9,11 @@ public class Pozycjonowanie {
 
         private Context kontekst;
         private Wifi_Manager WIFI;
-        private String plikBazy;
 
 
-        Pozycjonowanie(Context kontekst,String plikBazy) throws MalformedURLException {
+
+        Pozycjonowanie(Context kontekst) throws MalformedURLException {
             WIFI = new Wifi_Manager(kontekst);
-            this.plikBazy=plikBazy;
             this.kontekst=kontekst;
         }
         public void odczytaj_pozycje(znacznik_Pozycji znacznik)

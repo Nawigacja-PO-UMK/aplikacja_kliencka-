@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -47,10 +48,7 @@ public class MainActivity extends AppCompatActivity{
 
     private Context context;
     Pozycjonowanie pozycja;
-    final String Baza="daneBazy.jos";
-    TextView plik;
-    Switch przełocznik;
-    Button skan;
+    EditText room;
     Mapa mapa;
     boolean nagrywanie=false;
 
@@ -62,12 +60,14 @@ public class MainActivity extends AppCompatActivity{
         Context ctx = getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         setContentView(R.layout.activity_main);
+        room=findViewById(R.id.editTextTextPersonName);
+        room.setText("jjjj");
         context = this;
         mapa= new Mapa(context,findViewById(R.id.map));
         ///pozycjonowanie
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         try {
-            pozycja = new Pozycjonowanie(context,Baza);
+            pozycja = new Pozycjonowanie(context);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -90,6 +90,6 @@ public class MainActivity extends AppCompatActivity{
 
     public void trasowanie(View view)
     {
-
+    mapa.add_marker(room.getText().toString());
     }
 }

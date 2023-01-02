@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.kml.KmlFeature;
+import org.osmdroid.bonuspack.routing.OSRMRoadManager;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -75,5 +77,16 @@ public class Mapa {
         XY.Y=punkt.getLongitude();
         XY.Z=level;
         return XY;
+    }
+    public void add_marker(String nameRoom)
+    {
+        KmlFeature item = Add_marker.seach_item(nameRoom, loadKml.print_item_KML());
+        if(item!=null)
+        {
+            Add_marker.Add_marker(item,mapView);
+            OSRMRoadManager tracking=new OSRMRoadManager(kontekst,);
+        }
+        else
+            Toast.makeText(kontekst, "nie właściwa nazwa pomieszczenia", Toast.LENGTH_SHORT).show();
     }
 }

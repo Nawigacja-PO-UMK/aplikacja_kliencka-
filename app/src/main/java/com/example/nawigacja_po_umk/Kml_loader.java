@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import org.osmdroid.bonuspack.kml.KmlDocument;
+import org.osmdroid.bonuspack.kml.KmlFeature;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.FolderOverlay;
@@ -65,7 +66,12 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
         ///Dodawanie obiektów z JSON do kmlDocument i tworzenie warstwy piętra
         map_overpass.addInKmlFolder(kmlDocument.mKmlRoot,url);
     }
+    public KmlFeature[] print_item_KML()
+    {
 
+        KmlFeature[] mItem= kmlDocument.mKmlRoot.mItems.toArray(new KmlFeature[0]);
+        return mItem;
+    }
 
     void dodawanie_znacznika_lokalizacji()
     {
