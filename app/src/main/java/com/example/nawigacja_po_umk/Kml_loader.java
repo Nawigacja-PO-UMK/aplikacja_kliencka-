@@ -42,8 +42,17 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
 
-        for (int i=minlevel,j=0;i<=maxlevel;i++,j++)
-            kmlDocument[j] = tworzenieKmlDocument(i);
+        Thread[] threads=new Thread[maxlevel-minlevel+1];
+        for (int i=minlevel,j=0;i<=maxlevel;i++,j++) {
+            threads[j] = new Thread(new tworzenieKmlDocument(kmlDocument, j, i));
+            threads[j].start();
+        }
+        try {
+            threads[floor_level-minlevel].join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(kmlDocument[floor_level-minlevel]!=null)
         wczytywanie_mapy();
         return null;
     }
@@ -51,7 +60,7 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         progressDialog.dismiss();
         mapView.invalidate();
-        BoundingBox bb = kmlDocument[0].mKmlRoot.getBoundingBox();
+        BoundingBox bb = kmlDocument[floor_level-minlevel].mKmlRoot.getBoundingBox();
         mapView.zoomToBoundingBox(bb, true);
         super.onPostExecute(aVoid);
     }
@@ -69,16 +78,6 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
     {
         floor_level=level;
         wczytywanie_mapy();
-    }
-    private KmlDocument tworzenieKmlDocument(int level) {
-        KmlDocument kml = new KmlDocument();
-        Map_Overpass map_overpass = new Map_Overpass();
-        String tag = "level=" + level;
-        BoundingBox boxA = new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197);
-        String url = map_overpass.urlForTagSearchKml(tag, boxA,10000,1000);
-        ///Dodawanie obiektów z JSON do kmlDocument i tworzenie warstwy piętra
-        map_overpass.addInKmlFolder(kml.mKmlRoot,url);
-        return kml;
     }
     public KmlFeature[] print_item_KML()
     {
