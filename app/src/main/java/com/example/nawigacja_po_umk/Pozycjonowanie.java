@@ -3,7 +3,6 @@ package com.example.nawigacja_po_umk;
 import android.content.Context;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 
 public class Pozycjonowanie {
 
@@ -16,7 +15,7 @@ public class Pozycjonowanie {
             WIFI = new Wifi_Manager(kontekst);
             this.kontekst=kontekst;
         }
-        public void odczytaj_pozycje(znacznik_Pozycji znacznik)
+        public void odczytaj_pozycje(Znacznik_Pozycji znacznik)
         {
             odczytywanie_pozycji sesja=new odczytywanie_pozycji(kontekst,znacznik);
             WIFI.Akcje_Wifi(sesja);
