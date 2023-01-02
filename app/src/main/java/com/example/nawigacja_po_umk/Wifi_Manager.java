@@ -30,10 +30,10 @@ public class Wifi_Manager extends AppCompatActivity {
             @Override
             public void onReceive(Context c, Intent intent) {
                 List<ScanResult> skan= Skanowanie();
-                W.Wykonywanie_funkcji_wifi(skan);
-                if(W.kiedy_zakończyć_skanowanie(skan))
-                    kontekst.unregisterReceiver(this);
-                else Wifi.startScan();
+                   W.Wykonywanie_funkcji_wifi(skan);
+                   if(W.kiedy_zakończyć_skanowanie(skan))
+                kontekst.unregisterReceiver(this);
+                   else Wifi.startScan();
             }
         };
         IntentFilter intentFilter = new IntentFilter();

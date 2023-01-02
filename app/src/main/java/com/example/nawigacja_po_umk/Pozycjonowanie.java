@@ -3,6 +3,7 @@ package com.example.nawigacja_po_umk;
 import android.content.Context;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 
 public class Pozycjonowanie {
 

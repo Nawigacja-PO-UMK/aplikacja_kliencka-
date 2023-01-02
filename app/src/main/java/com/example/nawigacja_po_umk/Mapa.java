@@ -17,31 +17,25 @@ public class Mapa {
 
     private MapView mapView;
     private IMapController mapController;
-    Context context;
+    Context kontekst;
     private int level;
     private int levelmax;
     private int levelmin;
-    final int[] levels = {-1,0,1,2};
-    Floors floors;
 
-    Kml_loader loadKml;
+     Kml_loader loadKml;
 
-    Mapa(Context context, MapView mapView) {
-        this.context = context;
+    Mapa(Context kontekst, MapView mapView) {
+        this.kontekst = kontekst;
         this.mapView = mapView;
         mapView.setTileSource(TileSourceFactory.MAPNIK);
-        GeoPoint point2 = new GeoPoint(53.017270, 18.60300);
+        GeoPoint point2 = new GeoPoint(53.01699, 18.60282);
         IMapController mapController = mapView.getController();
         mapController.setCenter(point2);
-        mapController.setZoom(19.7);
-
-        mapView.setMinZoomLevel(19.7);
+        mapController.setZoom(15);
         mapView.setMultiTouchControls(true);
         levelmax=2;
         levelmin=-1;
         level = 0;
-
-        floors = new Floors(context,mapView,levels);
         wczytywanie_mapy(level);
     }
 
@@ -61,10 +55,14 @@ public class Mapa {
     @SuppressLint("SuspiciousIndentation")
     private void wczytywanie_mapy(int level) {
 
-        ConnectivityManager łączę =(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager łączę =(ConnectivityManager) kontekst.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(!(łączę.getActiveNetworkInfo()!=null &&  łączę.getActiveNetworkInfo().isConnected()))
-            Toast.makeText(context,"włacz internet",Toast.LENGTH_LONG).show();
-        else floors.add_Floor_Overlay_with_marker(level);
+            Toast.makeText(kontekst,"włacz internet",Toast.LENGTH_LONG).show();
+            else
+                if(loadKml!= null)
+                loadKml.wczytywanie_mapy(level);
+                else
+        loadKml= (Kml_loader) new Kml_loader(kontekst,mapView,level,-1,2).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
     public void wczytaj_nowa_mape(int level)
     {
@@ -74,10 +72,10 @@ public class Mapa {
         wczytywanie_mapy(level);
     }
 
-    public współrzedne odczytaj_współrzędne()
+    public wspułżedne odczytaj_wspułrzędne()
     {
-        współrzedne XY=new współrzedne();
-        GeoPoint punkt=floors.znacznik.getPosition();
+        wspułżedne XY=new wspułżedne();
+        GeoPoint punkt=loadKml.znacznik.getPosition();
         XY.X=punkt.getLatitude();
         XY.Y=punkt.getLongitude();
         XY.Z=level;
@@ -89,7 +87,7 @@ public class Mapa {
         if(item!=null)
         {
             Add_marker.Add_marker(item,mapView);
-            OSRMRoadManager tracking=new OSRMRoadManager(kontekst,);
+          //  OSRMRoadManager tracking=new OSRMRoadManager(kontekst,);
         }
         else
             Toast.makeText(kontekst, "nie właściwa nazwa pomieszczenia", Toast.LENGTH_SHORT).show();

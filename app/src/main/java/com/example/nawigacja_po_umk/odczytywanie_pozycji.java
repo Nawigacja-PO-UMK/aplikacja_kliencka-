@@ -27,12 +27,12 @@ import java.util.Map;
 
 public class odczytywanie_pozycji implements Akcje_na_Wifi{
 
-    private współrzedne XY;
+    private wspułżedne XY;
     private final int skala_błędu_skanowania=4;
     private Znacznik_Pozycji znacznik;
     private Context kontekst;
     URL url;
-    odczytywanie_pozycji(Context kontekst, Znacznik_Pozycji znacznik)
+    odczytywanie_pozycji(Context kontekst,Znacznik_Pozycji znacznik)
     {
         this.XY=XY;
         this.kontekst=kontekst;
@@ -89,7 +89,7 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi{
     void odbieranie_danych(String JSON)
     {
         ///jakaś struktura danych parsowan;
-        zmian_pozycji_wskaźnika(new współrzedne());
+        zmian_pozycji_wskaźnika(new wspułżedne());
     }
 
 
@@ -111,7 +111,7 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi{
         return lista_punktów.toString();
     }
 
-    private void zmian_pozycji_wskaźnika(współrzedne dane)
+    private void zmian_pozycji_wskaźnika(wspułżedne dane)
     {
         if (dane !=null) {
             znacznik.przesunięcię_wskaznika(new GeoPoint(dane.X,dane.Y));
