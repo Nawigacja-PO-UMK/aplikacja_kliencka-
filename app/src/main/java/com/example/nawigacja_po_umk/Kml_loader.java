@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.bonuspack.kml.KmlDocument;
 import org.osmdroid.bonuspack.kml.KmlFeature;
@@ -34,8 +33,6 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
         this.maxlevel=maxlevel;
         this.kmlDocument =new KmlDocument[maxlevel-minlevel+1];
     }
-
-
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -68,7 +65,6 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
        dodawanie_znacznika_lokalizacji();
         mapView.setBackgroundColor(2000);
     }
-
     public void  wczytywanie_mapy(int level)
     {
         floor_level=level;

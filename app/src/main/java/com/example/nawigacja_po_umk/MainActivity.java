@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity{
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         setContentView(R.layout.activity_main);
         room=findViewById(R.id.editTextTextPersonName);
-        room.setText("jjjj");
         context = this;
         mapa= new Mapa(context,findViewById(R.id.map));
         ///pozycjonowanie

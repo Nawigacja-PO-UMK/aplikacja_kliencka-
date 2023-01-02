@@ -7,11 +7,23 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.kml.KmlDocument;
 import org.osmdroid.bonuspack.kml.KmlFeature;
 import org.osmdroid.bonuspack.routing.OSRMRoadManager;
+import org.osmdroid.bonuspack.routing.Road;
+import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.DefaultOverlayManager;
+import org.osmdroid.views.overlay.FolderOverlay;
+import org.osmdroid.views.overlay.Overlay;
+import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.OverlayManager;
+import org.osmdroid.views.overlay.OverlayWithIW;
+import org.osmdroid.views.overlay.Polyline;
+
+import java.util.ArrayList;
 
 public class Mapa {
 
@@ -21,6 +33,7 @@ public class Mapa {
     private int level;
     private int levelmax;
     private int levelmin;
+    private  Traking traking;
 
      Kml_loader loadKml;
 
@@ -83,13 +96,25 @@ public class Mapa {
     }
     public void add_marker(String nameRoom)
     {
+
         KmlFeature item = Add_marker.seach_item(nameRoom, loadKml.print_item_KML());
-        if(item!=null)
-        {
-            Add_marker.Add_marker(item,mapView);
-          //  OSRMRoadManager tracking=new OSRMRoadManager(kontekst,);
+        if(item!=null) {
+            Add_marker.Add_marker(item, mapView, "miejsce docelowe");
+            Polyline polyline;
+            if (traking == null) {
+                this.traking=new Traking(kontekst);
+               polyline=traking.tracking(loadKml.znacznik.getPosition(), item.getBoundingBox().getCenter());
+            }
+            else
+                polyline= traking.tracking(item.getBoundingBox().getCenter());
+
+
+            mapView.getOverlays().add(1,polyline);
         }
         else
             Toast.makeText(kontekst, "nie właściwa nazwa pomieszczenia", Toast.LENGTH_SHORT).show();
     }
+
+
+
 }
