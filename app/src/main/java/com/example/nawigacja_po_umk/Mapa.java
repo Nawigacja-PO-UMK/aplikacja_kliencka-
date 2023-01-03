@@ -73,7 +73,7 @@ public class Mapa {
             Toast.makeText(kontekst,"włacz internet",Toast.LENGTH_LONG).show();
             else
                 if(loadKml!= null)
-                loadKml.wczytywanie_mapy(level);
+                loadKml.show_map(level);
                 else
         loadKml= (Kml_loader) new Kml_loader(kontekst,mapView,level,-1,2).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }

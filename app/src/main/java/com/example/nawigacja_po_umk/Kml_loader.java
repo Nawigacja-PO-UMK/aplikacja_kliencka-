@@ -18,6 +18,7 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
 
     private Context context;
     private MapView mapView;
+    private FolderOverlay[] folderOverlays;
     int floor_level;
     int minlevel;
     int maxlevel;
@@ -32,6 +33,7 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
         this.minlevel=minlevel;
         this.maxlevel=maxlevel;
         this.kmlDocument =new KmlDocument[maxlevel-minlevel+1];
+        this.folderOverlays=new FolderOverlay[maxlevel-minlevel+1];
     }
     @Override
     protected void onPreExecute() {
@@ -44,7 +46,7 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
 
         Thread[] threads=new Thread[maxlevel-minlevel+1];
         for (int i=minlevel,j=0;i<=maxlevel;i++,j++) {
-            threads[j] = new Thread(new tworzenieKmlDocument(kmlDocument, j, i));
+            threads[j] = new Thread(new wczytywanie_mapy(kmlDocument,folderOverlays,j, i,mapView));
             threads[j].start();
         }
         try {
@@ -52,8 +54,7 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if(kmlDocument[floor_level-minlevel]!=null)
-        wczytywanie_mapy();
+        show_map();
         return null;
     }
     @Override
@@ -65,19 +66,17 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
     }
 
-    private void  wczytywanie_mapy()
+    private void  show_map()
     {
-        FolderOverlay kmlOverlay = (FolderOverlay) kmlDocument[floor_level-minlevel].mKmlRoot.buildOverlay(mapView, null, null,kmlDocument[floor_level-minlevel]);
-        kmlOverlay.setName("Floor"+floor_level);
-        mapView.getOverlays().add(kmlOverlay);
+        mapView.getOverlays().add(folderOverlays[floor_level-minlevel]);
         ///dodawanieznacznika
        dodawanie_znacznika_lokalizacji();
         mapView.setBackgroundColor(2000);
     }
-    public void  wczytywanie_mapy(int level)
+    public void  show_map(int level)
     {
         floor_level=level;
-        wczytywanie_mapy();
+        show_map();
     }
     public KmlFeature[] print_item_KML()
     {
