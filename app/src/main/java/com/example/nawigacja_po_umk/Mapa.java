@@ -1,5 +1,7 @@
 package com.example.nawigacja_po_umk;
 
+import static java.lang.Integer.parseInt;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -13,6 +15,7 @@ import org.osmdroid.bonuspack.routing.OSRMRoadManager;
 import org.osmdroid.bonuspack.routing.Road;
 import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.DefaultOverlayManager;
@@ -34,14 +37,15 @@ public class Mapa {
     private int levelmax;
     private int levelmin;
     private  Traking traking;
-
-     Kml_loader loadKml;
-
+    public trasa trasa;
+    public Znacznik_Pozycji znacznik;
+    private Kml_loader loadKml;
+    private GeoPoint point2;
     Mapa(Context kontekst, MapView mapView) {
         this.kontekst = kontekst;
         this.mapView = mapView;
         mapView.setTileSource(TileSourceFactory.MAPNIK);
-        GeoPoint point2 = new GeoPoint(53.01699, 18.60282);
+        point2 = new GeoPoint(53.01699, 18.60282);
         IMapController mapController = mapView.getController();
         mapController.setCenter(point2);
         mapController.setZoom(15);
@@ -50,6 +54,7 @@ public class Mapa {
         levelmin=-1;
         level = 0;
         wczytywanie_mapy(level);
+        dodawanie_znacznika_lokalizacji();
     }
 
     public int level() {
@@ -71,50 +76,59 @@ public class Mapa {
         ConnectivityManager łączę =(ConnectivityManager) kontekst.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(!(łączę.getActiveNetworkInfo()!=null &&  łączę.getActiveNetworkInfo().isConnected()))
             Toast.makeText(kontekst,"włacz internet",Toast.LENGTH_LONG).show();
-            else
-                if(loadKml!= null)
+            else {
+            if (loadKml != null)
                 loadKml.show_map(level);
-                else
-        loadKml= (Kml_loader) new Kml_loader(kontekst,mapView,level,-1,2).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            else
+                loadKml = (Kml_loader) new Kml_loader(kontekst, mapView, level, levelmin, levelmax).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+
     }
     public void wczytaj_nowa_mape(int level)
     {
         this.level=level;
         mapView.getOverlays().clear();
+        mapView.getOverlays().add(znacznik);
         mapView.invalidate();
         wczytywanie_mapy(level);
+
+
     }
 
     public wspułżedne odczytaj_wspułrzędne()
     {
         wspułżedne XY=new wspułżedne();
-        GeoPoint punkt=loadKml.znacznik.getPosition();
+        GeoPoint punkt=znacznik.getPosition();
         XY.X=punkt.getLatitude();
         XY.Y=punkt.getLongitude();
         XY.Z=level;
         return XY;
     }
-    public void add_marker(String nameRoom)
+    public void add_tracking(String nameRoom)
     {
-
         KmlFeature item = Add_marker.seach_item(nameRoom, loadKml.print_item_KML());
         if(item!=null) {
             Add_marker.Add_marker(item, mapView, "miejsce docelowe");
             Polyline polyline;
             if (traking == null) {
-                this.traking=new Traking(kontekst);
-               polyline=traking.tracking(loadKml.znacznik.getPosition(), item.getBoundingBox().getCenter());
+                this.traking=new Traking(kontekst,level);
+                Road road=traking.tracking(level,znacznik.getPosition(), item.getBoundingBox().getCenter(),parseInt(item.mExtendedData.get("level")));
+                trasa=new trasa(road);
             }
             else
-                polyline= traking.tracking(item.getBoundingBox().getCenter());
-
-
-            mapView.getOverlays().add(1,polyline);
+                trasa.add_trasa(traking.tracking(parseInt(item.mExtendedData.get("level")),item.getBoundingBox().getCenter()));
+            int size= mapView.getOverlays().size();
+            mapView.getOverlays().add(size-3, trasa.polyline());
         }
         else
             Toast.makeText(kontekst, "nie właściwa nazwa pomieszczenia", Toast.LENGTH_SHORT).show();
     }
 
-
-
+    private void dodawanie_znacznika_lokalizacji() {
+        znacznik = new Znacznik_Pozycji(mapView, kontekst, level, point2);
+        nasłuchiwanie_znacznika_pozycji nasłuchiwanie = new nasłuchiwanie_znacznika_pozycji(kontekst, level);
+        znacznik.setOnMarkerDragListener(nasłuchiwanie);
+        mapView.getOverlays().add(znacznik);
+        mapView.invalidate();
+    }
 }

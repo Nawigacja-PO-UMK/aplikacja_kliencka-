@@ -82,5 +82,15 @@
             android:layout_marginBottom="30dp"
             android:onClick="LewelDownMap"
             android:text="@string/down" />
+
+        <TextView
+            android:id="@+id/instruction"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="600dp"
+            android:textAlignment="center"
+            android:scrollbars = "vertical" />
+
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

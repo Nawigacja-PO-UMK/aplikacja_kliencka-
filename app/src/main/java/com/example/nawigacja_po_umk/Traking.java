@@ -14,44 +14,51 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import kotlin.random.Random;
+import kotlin.random.URandomKt;
+
 public class Traking {
 
     OSRMRoadManager tracking;
     Context context;
     Stack<GeoPoint> location;
-    Color color;
-    public Traking(Context context)
+    int level;
+    int lost_level;
+    public Traking(Context context,int level)
     {
         this.context=context;
         tracking=new OSRMRoadManager(context,"test");
         tracking.setMean("routed-foot/route/v1/driving/");
         location=new Stack<GeoPoint>();
-        color.blue(255);
-        color.alpha(255);
-        color.red(0);
-        color.green(255);
+        this.level=level;
+
     }
 
-
-    public Polyline tracking(GeoPoint next)
+    public Road tracking(int level,GeoPoint next)
     {
         if (location.size()>0)
-        return tracking(location.peek(),next);
+        return tracking(lost_level,location.peek(),next,level);
         return null;
     }
 
-public Polyline tracking(GeoPoint begin, GeoPoint end)
+public Road tracking(int level_begin,GeoPoint begin, GeoPoint end,int level_end)
+ {
+    this.lost_level=level_end;
+    this.location.push(end);
+        if(level_begin==level_end)
+            return leveltraking(begin,end);
+        else
+            return null;
+ }
+
+ private Road leveltraking(GeoPoint begin, GeoPoint end)
  {
      ArrayList<GeoPoint> punkty=new ArrayList<GeoPoint>();
      punkty.add(begin);
      punkty.add(end);
      Road road =tracking.getRoad(punkty);
      ArrayList<GeoPoint> points=road.mRouteHigh;
-     Polyline roadOverlay = RoadManager.buildRoadOverlay(road,0x800000FF,7.0f);
-     String opis=road.getLengthDurationText(context,0);
-     Toast.makeText(context,opis, Toast.LENGTH_SHORT).show();
-     this.location.push(end);
-     return roadOverlay;
+     return road;
  }
 
 

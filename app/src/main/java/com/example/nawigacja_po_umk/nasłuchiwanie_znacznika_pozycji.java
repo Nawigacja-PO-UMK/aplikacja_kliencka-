@@ -26,6 +26,7 @@ public class nasłuchiwanie_znacznika_pozycji implements Marker.OnMarkerDragList
         X=pozycja.getLatitude();
         Y=pozycja.getLongitude();
         marker.setTitle("X="+X+" Y="+Y+" Z="+level);
+
     }
 
     @Override

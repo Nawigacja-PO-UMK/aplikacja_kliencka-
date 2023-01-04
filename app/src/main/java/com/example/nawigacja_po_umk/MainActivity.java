@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -50,8 +51,9 @@ public class MainActivity extends AppCompatActivity{
     Pozycjonowanie pozycja;
     EditText room;
     Mapa mapa;
-    boolean nagrywanie=false;
+    TextView instruction;
 
+    @SuppressLint("MissingInflatedId")
     @Override protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity{
         room=findViewById(R.id.editTextTextPersonName);
         context = this;
         mapa= new Mapa(context,findViewById(R.id.map));
+        instruction= (TextView) findViewById(R.id.instruction);
         ///pozycjonowanie
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         try {
@@ -89,6 +92,10 @@ public class MainActivity extends AppCompatActivity{
 
     public void trasowanie(View view)
     {
-    mapa.add_marker(room.getText().toString());
+    mapa.add_tracking(room.getText().toString());
+    instruction.setBackgroundColor(0xFFFFFFFF);
+    instruction.setAllCaps(true);
+    instruction.setMovementMethod(new ScrollingMovementMethod());
+    instruction.setText(mapa.trasa.print_descryption());
     }
 }

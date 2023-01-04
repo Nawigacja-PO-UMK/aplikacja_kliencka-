@@ -21,7 +21,6 @@ public class Znacznik_Pozycji extends Marker {
         setIcon(Icon);
         this.mapView=mapView;
         GeoPoint pozycja = getPosition();
-
         setTitle("X="+pozycja.getLatitude()+" Y="+pozycja.getLongitude()+" Z="+level);
     }
 

@@ -14,15 +14,15 @@ import org.osmdroid.views.overlay.FolderOverlay;
 
 public class Kml_loader extends AsyncTask<Void, Void, Void> {
     ProgressDialog progressDialog;
-    KmlDocument[] kmlDocument;
 
+    KmlDocument[] kmlDocument;
     private Context context;
     private MapView mapView;
     private FolderOverlay[] folderOverlays;
     int floor_level;
     int minlevel;
     int maxlevel;
-    public Znacznik_Pozycji znacznik;
+
 
     Kml_loader(Context context, MapView mapView,int floor_level,int minlevel,int maxlevel )
     {
@@ -46,17 +46,37 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
 
         Thread[] threads=new Thread[maxlevel-minlevel+1];
         for (int i=minlevel,j=0;i<=maxlevel;i++,j++) {
-            threads[j] = new Thread(new wczytywanie_mapy(kmlDocument,folderOverlays,j, i,mapView));
-            threads[j].start();
+            //threads[j] = new Thread(new wczytywanie_mapy(kmlDocument,folderOverlays,j, i,mapView));
+            //threads[j].start();
+            wczytywanie_mapy(kmlDocument,folderOverlays,j, i,mapView);
         }
+        /*
         try {
-            threads[floor_level-minlevel].join();
+            for (int i=0;i<threads.length;i++) {
+                threads[i].join();
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        /
+         */
         show_map();
         return null;
     }
+
+    void wczytywanie_mapy(KmlDocument[] kmlDocuments,FolderOverlay[] folderOverlays,int index, int level,MapView mapView)
+    {
+        kmlDocuments[index] = new KmlDocument();
+        Map_Overpass map_overpass = new Map_Overpass();
+        String tag = "level=" + level;
+        BoundingBox boxA = new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197);
+        String url = map_overpass.urlForTagSearchKml(tag, boxA,10000,1000);
+        ///Dodawanie obiektów z JSON do kmlDocument i tworzenie warstwy piętra
+        map_overpass.addInKmlFolder(kmlDocuments[index].mKmlRoot,url);
+        folderOverlays[index] = (FolderOverlay) kmlDocuments[index].mKmlRoot.buildOverlay(mapView, null, null,kmlDocuments[index]);
+        folderOverlays[index].setName("Floor"+level);
+    }
+
     @Override
     protected void onPostExecute(Void aVoid) {
         progressDialog.dismiss();
@@ -68,9 +88,9 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
 
     private void  show_map()
     {
-        mapView.getOverlays().add(folderOverlays[floor_level-minlevel]);
+        mapView.getOverlays().add(0,folderOverlays[floor_level-minlevel]);
         ///dodawanieznacznika
-       dodawanie_znacznika_lokalizacji();
+
         mapView.setBackgroundColor(2000);
     }
     public void  show_map(int level)
@@ -78,16 +98,13 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
         floor_level=level;
         show_map();
     }
-    public KmlFeature[] print_item_KML()
+    public KmlFeature[][] print_item_KML()
     {
-        KmlFeature[] mItem= kmlDocument[floor_level-minlevel].mKmlRoot.mItems.toArray(new KmlFeature[0]);
+        KmlFeature[][] mItem= new KmlFeature[kmlDocument.length][];
+        for(int i=0;i<kmlDocument.length;i++) {
+            mItem[i] = kmlDocument[i].mKmlRoot.mItems.toArray(new KmlFeature[0]);
+        }
         return mItem;
     }
-    void dodawanie_znacznika_lokalizacji()
-    {
-        znacznik= new Znacznik_Pozycji(mapView,context,floor_level, (GeoPoint) mapView.getMapCenter());
-        nasłuchiwanie_znacznika_pozycji nasłuchiwanie = new nasłuchiwanie_znacznika_pozycji(context,floor_level);
-        znacznik.setOnMarkerDragListener(nasłuchiwanie);
-        mapView.getOverlays().add(znacznik);
-    }
+
 }

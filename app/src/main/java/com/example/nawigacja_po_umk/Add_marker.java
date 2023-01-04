@@ -7,13 +7,13 @@ import org.osmdroid.views.overlay.Marker;
 
 public class Add_marker {
 
-    public static KmlFeature seach_item(@NotNull String name, KmlFeature[] items)
+    public static KmlFeature seach_item(@NotNull String name, KmlFeature[][] items)
     {
-        for(int i=0;i<items.length;i++)
-        {
-            if(items[i].mName!=null && items[i].mName.equals(name))
-            {
-                return items[i];
+        for (int j=0;j< items.length;j++) {
+            for (int i = 0; i < items[j].length; i++) {
+                if (items[j][i].mName != null && items[j][i].mName.equals(name)) {
+                    return items[j][i];
+                }
             }
         }
      return null;
