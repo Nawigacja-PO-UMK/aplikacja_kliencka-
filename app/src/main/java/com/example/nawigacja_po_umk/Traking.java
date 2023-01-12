@@ -48,7 +48,7 @@ public Road tracking(int level_begin,GeoPoint begin, GeoPoint end,int level_end)
         if(level_begin==level_end)
             return leveltraking(begin,end);
         else
-            return null;
+            return leveltraking(begin,end);
  }
 
  private Road leveltraking(GeoPoint begin, GeoPoint end)

@@ -46,37 +46,17 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
 
         Thread[] threads=new Thread[maxlevel-minlevel+1];
         for (int i=minlevel,j=0;i<=maxlevel;i++,j++) {
-            //threads[j] = new Thread(new wczytywanie_mapy(kmlDocument,folderOverlays,j, i,mapView));
-            //threads[j].start();
-            wczytywanie_mapy(kmlDocument,folderOverlays,j, i,mapView);
+            threads[j] = new Thread(new wczytywanie_mapy(kmlDocument,folderOverlays,j, i,mapView));
+            threads[j].start();
         }
-        /*
         try {
-            for (int i=0;i<threads.length;i++) {
-                threads[i].join();
-            }
+            threads[floor_level-minlevel].join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        /
-         */
         show_map();
         return null;
     }
-
-    void wczytywanie_mapy(KmlDocument[] kmlDocuments,FolderOverlay[] folderOverlays,int index, int level,MapView mapView)
-    {
-        kmlDocuments[index] = new KmlDocument();
-        Map_Overpass map_overpass = new Map_Overpass();
-        String tag = "level=" + level;
-        BoundingBox boxA = new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197);
-        String url = map_overpass.urlForTagSearchKml(tag, boxA,10000,1000);
-        ///Dodawanie obiektów z JSON do kmlDocument i tworzenie warstwy piętra
-        map_overpass.addInKmlFolder(kmlDocuments[index].mKmlRoot,url);
-        folderOverlays[index] = (FolderOverlay) kmlDocuments[index].mKmlRoot.buildOverlay(mapView, null, null,kmlDocuments[index]);
-        folderOverlays[index].setName("Floor"+level);
-    }
-
     @Override
     protected void onPostExecute(Void aVoid) {
         progressDialog.dismiss();
@@ -90,7 +70,6 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
     {
         mapView.getOverlays().add(0,folderOverlays[floor_level-minlevel]);
         ///dodawanieznacznika
-
         mapView.setBackgroundColor(2000);
     }
     public void  show_map(int level)

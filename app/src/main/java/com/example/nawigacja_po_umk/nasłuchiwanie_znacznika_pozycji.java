@@ -14,6 +14,11 @@ public class nasłuchiwanie_znacznika_pozycji implements Marker.OnMarkerDragList
         this.kontekst=kontekst;
         this.level=level;
     }
+    void update_level(int level)
+    {
+        this.level=level;
+    }
+
     @Override
     public void onMarkerDrag(Marker marker) {
 
