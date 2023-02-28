@@ -1,4 +1,4 @@
-package com.example.nawigacja_po_umk;
+package com.locaton_Wifi;
 
 import android.net.wifi.ScanResult;
 

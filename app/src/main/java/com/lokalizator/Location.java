@@ -1,0 +1,65 @@
+package com.lokalizator;
+
+import android.content.Context;
+
+import org.osmdroid.api.IMapController;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.mylocation.IMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+public class Location  {
+    private Context kontekst;
+    private MapView mapView;
+    private MyLocationNewOverlay myLocationNewOverlay;
+    private GeoPoint last_kow_location;
+    private IMapController mapController;
+    private boolean seting_center;
+    public android.location.Location Location;
+    public Location(Context kontekst, MapView mapView, Akcje_na_lokacizacji[] Akcje)
+    {
+        this.kontekst=kontekst;
+        this.mapView=mapView;
+        this.seting_center=false;
+        mapController = mapView.getController();
+        mapController.setZoom(10);
+        last_kow_location=new GeoPoint(53.017270, 18.60300);
+        mapController.setCenter(last_kow_location);
+        this.myLocationNewOverlay = new MyLocationNewOverlay(new uniwersal_location(kontekst),mapView) {
+                @Override
+                public void onLocationChanged(android.location.Location location, IMyLocationProvider source) {
+                super.onLocationChanged(location, source);
+                last_kow_location=new GeoPoint(location.getLatitude(),location.getLongitude());
+
+                if(!seting_center) {
+                        mapController.animateTo(last_kow_location);
+                        mapController.setCenter(last_kow_location);
+                        mapController.setZoom(18);
+                        seting_center=true;
+                    }
+                Location=location;
+                for(int i=0;i<Akcje.length;i++) {
+                    if (Akcje[i].warunek(location))
+                        Akcje[i].Akcja(location);
+                    else
+                        Akcje[i].Akcje_is_false(location);
+                }
+            }
+        };
+        this.myLocationNewOverlay.enableMyLocation();
+        mapView.getOverlays().add(this.myLocationNewOverlay);
+    }
+
+
+    MyLocationNewOverlay getOverlay()
+    {
+        return myLocationNewOverlay;
+    }
+
+   public GeoPoint getMyLocation() {
+
+        return last_kow_location;
+
+    }
+
+}

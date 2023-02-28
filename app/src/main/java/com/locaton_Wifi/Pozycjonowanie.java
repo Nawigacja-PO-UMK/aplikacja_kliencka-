@@ -1,9 +1,10 @@
-package com.example.nawigacja_po_umk;
+package com.locaton_Wifi;
 
 import android.content.Context;
 
+import com.loader_Map_Building.Znacznik_Pozycji;
+
 import java.net.MalformedURLException;
-import java.net.URL;
 
 public class Pozycjonowanie {
 
@@ -12,7 +13,7 @@ public class Pozycjonowanie {
 
 
 
-        Pozycjonowanie(Context kontekst) throws MalformedURLException {
+        public Pozycjonowanie(Context kontekst) throws MalformedURLException {
             WIFI = new Wifi_Manager(kontekst);
             this.kontekst=kontekst;
         }

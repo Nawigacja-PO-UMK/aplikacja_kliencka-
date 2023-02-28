@@ -1,14 +1,14 @@
-package com.example.nawigacja_po_umk;
+package com.loader_Map_Building;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
-import org.osmdroid.api.IGeoPoint;
+
+import com.loader_Map_Building.wczytywanie_mapy;
+
 import org.osmdroid.bonuspack.kml.KmlDocument;
 import org.osmdroid.bonuspack.kml.KmlFeature;
 import org.osmdroid.util.BoundingBox;
-import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.FolderOverlay;
 
@@ -62,7 +62,7 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
         progressDialog.dismiss();
         mapView.invalidate();
         BoundingBox bb = kmlDocument[floor_level-minlevel].mKmlRoot.getBoundingBox();
-        mapView.zoomToBoundingBox(bb, true);
+        //mapView.zoomToBoundingBox(bb, true);
         super.onPostExecute(aVoid);
     }
 

@@ -1,4 +1,4 @@
-package com.example.nawigacja_po_umk;
+package com.locaton_Wifi;
 
 import static java.lang.Math.abs;
 
@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.loader_Map_Building.Znacznik_Pozycji;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,14 +26,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class odczytywanie_pozycji implements Akcje_na_Wifi{
+public class odczytywanie_pozycji implements Akcje_na_Wifi {
 
-    private wspułżedne XY;
+    private współrzedne XY;
     private final int skala_błędu_skanowania=4;
     private Znacznik_Pozycji znacznik;
     private Context kontekst;
     URL url;
-    odczytywanie_pozycji(Context kontekst,Znacznik_Pozycji znacznik)
+    public odczytywanie_pozycji(Context kontekst, Znacznik_Pozycji znacznik)
     {
         this.XY=XY;
         this.kontekst=kontekst;
@@ -89,7 +90,7 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi{
     void odbieranie_danych(String JSON)
     {
         ///jakaś struktura danych parsowan;
-        zmian_pozycji_wskaźnika(new wspułżedne());
+        zmian_pozycji_wskaźnika(new współrzedne());
     }
 
 
@@ -111,7 +112,7 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi{
         return lista_punktów.toString();
     }
 
-    private void zmian_pozycji_wskaźnika(wspułżedne dane)
+    private void zmian_pozycji_wskaźnika(współrzedne dane)
     {
         if (dane !=null) {
             znacznik.przesunięcię_wskaznika(new GeoPoint(dane.X,dane.Y));

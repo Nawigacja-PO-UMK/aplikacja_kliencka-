@@ -1,4 +1,4 @@
-package com.example.nawigacja_po_umk;
+package com.loader_Map_Building;
 
 import org.osmdroid.bonuspack.kml.KmlDocument;
 import org.osmdroid.util.BoundingBox;

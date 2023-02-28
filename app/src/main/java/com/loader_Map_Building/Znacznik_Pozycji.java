@@ -1,7 +1,9 @@
-package com.example.nawigacja_po_umk;
+package com.loader_Map_Building;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+
+import com.example.nawigacja_po_umk.R;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
