@@ -87,7 +87,9 @@ public class trasa_outside extends trasa {
                if(is_remove_lost)
                    tmpRoad.mRouteHigh.remove(0);
                tmpRoad.mRouteHigh.add(0,point);
-               tmpRoad.mLength = distance(0);
+               tmpRoad.mLength = distance(0)/1000;
+               tmpRoad.mDuration=tmpRoad.mLength*700;
+               Toast.makeText(context, String.valueOf(tmpRoad.mLength), Toast.LENGTH_SHORT).show();
            }
             roads.set(0, tmpRoad);
     }

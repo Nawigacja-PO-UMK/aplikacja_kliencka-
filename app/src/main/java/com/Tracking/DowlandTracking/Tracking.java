@@ -26,10 +26,7 @@ public abstract class Tracking {
         this.context=context;
         location=new Stack<GeoPoint>();
         this.level=level;
-
     }
-
-
     public Road add_tracking(int level,GeoPoint next)
     {
         if (location.size()>0)

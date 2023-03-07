@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.Tracking.DowlandTracking.OSRM_Tracking;
 import com.Tracking.activity_Tracking;
 import com.Tracking.trasy.trasa_outside;
+import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
 import com.loader_Map_Building.Mapa_budynku;
 import com.lokalizator.Akcje_na_lokacizacji;
 import com.lokalizator.Location;
@@ -34,7 +35,7 @@ public class Mapa {
     private activity_Tracking tracking;
 
 
-    Mapa(Context kontekst,MapView mapView)
+    Mapa(Context kontekst, MapView mapView, screean_Tracking screean_tracking)
     {
         this.kontekst = kontekst;
         this.mapView = mapView;
@@ -43,8 +44,9 @@ public class Mapa {
         mapController.setZoom(15);
         mapView.setMultiTouchControls(true);
         uniwersal_location  sourceLocation=new uniwersal_location(kontekst);
-        this.loader_map= new Loader_map(new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197),mapView,kontekst,sourceLocation);
-        tracking=new activity_Tracking(mapView,kontekst,new trasa_outside(), new OSRM_Tracking(kontekst,0));
+        this.loader_map= new Loader_map(new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197),
+                mapView,kontekst,sourceLocation,screean_tracking);
+        tracking=new activity_Tracking(mapView,kontekst,new trasa_outside(), new OSRM_Tracking(kontekst,0),screean_tracking);
         location=new Location(kontekst,mapView, new Akcje_na_lokacizacji[]{loader_map, tracking},sourceLocation);
     }
 

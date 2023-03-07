@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.Text_convert_voice;
 import com.Tracking.trasy.trasa;
+import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
 import com.locaton_Wifi.Pozycjonowanie;
 import com.Tracking.trasy.trasa_outside;
 
@@ -57,7 +58,8 @@ public class MainActivity extends AppCompatActivity{
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PackageManager.PERMISSION_GRANTED);
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
 
-        mapa= new Mapa(context,findViewById(R.id.map));
+        screean_Tracking  screean_tracking=new screean_Tracking(instruction,tracking);
+        mapa= new Mapa(context,findViewById(R.id.map),screean_tracking);
         try {
             pozycja = new Pozycjonowanie(context);
         } catch (MalformedURLException e) {
@@ -95,8 +97,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void trasowanie(View view) throws IOException {
-
-
 
         if(mapa.getMapa_budynku()!=null)
             mapa.getMapa_budynku().add_tracking(room.getText().toString());

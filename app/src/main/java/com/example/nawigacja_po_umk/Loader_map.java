@@ -3,6 +3,7 @@ package com.example.nawigacja_po_umk;
 import android.content.Context;
 import android.location.Location;
 
+import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
 import com.loader_Map_Building.Mapa_budynku;
 import com.lokalizator.Akcje_na_lokacizacji;
 
@@ -16,15 +17,15 @@ public class Loader_map implements Akcje_na_lokacizacji {
     private BoundingBox box;
     private MapView mapView;
     private  Context kontekst;
-
-    Loader_map(BoundingBox box, MapView mapView, Context kontekst, com.lokalizator.uniwersal_location location)
+    private screean_Tracking screean_tracking;
+    Loader_map(BoundingBox box, MapView mapView, Context kontekst, com.lokalizator.uniwersal_location location, screean_Tracking screean_tracking)
    {
        this.box=box;
        this.kontekst=kontekst;
        this.mapView=mapView;
        mapa_budynku=null;
        this.location=location;
-
+       this.screean_tracking=screean_tracking;
    }
 
 
@@ -38,7 +39,7 @@ public class Loader_map implements Akcje_na_lokacizacji {
     public void Akcja(Location location)
     {
            if (mapa_budynku == null) {
-               mapa_budynku = new Mapa_budynku(kontekst, mapView);
+               mapa_budynku = new Mapa_budynku(kontekst, mapView,screean_tracking);
                mapa_budynku.wczytywanie_mapy(0);
            }
 

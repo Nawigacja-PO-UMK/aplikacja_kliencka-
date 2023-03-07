@@ -2,6 +2,7 @@ package com.Tracking.trasy;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.widget.Toast;
 
 import com.example.nawigacja_po_umk.R;
 
@@ -19,7 +20,7 @@ public abstract class trasa {
     protected ArrayList<String> Tracking;
     public int Color;
     public Polyline polyline=null;
-    protected double delta=0.0005;
+    protected double delta=20;
     Context context;
     MapView mapView;
     Drawable nodeIcon;
@@ -88,7 +89,7 @@ public abstract class trasa {
         double distance=0;
         for(int i=1; i<roads.get(index).mRouteHigh.size();i++)
         {
-            distance+=odległość(roads.get(index).mRouteHigh.get(i),roads.get(index).mRouteHigh.get(i-1));
+            distance+=roads.get(index).mRouteHigh.get(i).distanceToAsDouble(roads.get(index).mRouteHigh.get(i-1));
         }
         return distance;
     }
@@ -122,8 +123,8 @@ public abstract class trasa {
 
     public double odległość(GeoPoint punkt1 ,GeoPoint punkt2)
     {
-        return Math.sqrt(Math.pow(punkt1.getLongitude()-punkt2.getLongitude(),2)
-                +Math.pow(punkt1.getLatitude()-punkt2.getLatitude(),2));
+        return punkt1.distanceToAsDouble(punkt2);
+        //Toast.makeText(context,String.valueOf(a)+" "+String.valueOf(b), Toast.LENGTH_SHORT).show();
     }
     public String now_instruction(GeoPoint location)
     {

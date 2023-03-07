@@ -9,6 +9,7 @@ import com.Text_convert_voice;
 import com.Tracking.DowlandTracking.Tracking;
 import com.Tracking.trasy.trasa;
 import com.example.nawigacja_po_umk.Add_marker;
+import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
 import com.lokalizator.Akcje_na_lokacizacji;
 import com.search_location.search_location;
 
@@ -24,12 +25,13 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
     protected Context kontekst;
     protected Tracking traking;
     protected GeoPoint location;
-    protected  double delta=0.0000005;
+    protected  double delta=1;
     protected boolean now_tracking;
-    trasa typtrasa;
-    Text_convert_voice text_convert_voice;
+    private trasa typtrasa;
+    private Text_convert_voice text_convert_voice;
     boolean voice;
-    public activity_Tracking(MapView mapView, Context kontekst, trasa typtrasa, Tracking tracking)  {
+    private screean_Tracking screean_tracking;
+    public activity_Tracking(MapView mapView, Context kontekst, trasa typtrasa, Tracking tracking, screean_Tracking screean_tracking)  {
         this.typtrasa=typtrasa;
         this.kontekst=kontekst;
         this.mapView=mapView;
@@ -38,6 +40,7 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
         now_tracking=false;
         this.text_convert_voice=new Text_convert_voice(kontekst);
         voice=true;
+        this.screean_tracking=screean_tracking;
     }
 
     public void setVoice(boolean voice)
@@ -179,6 +182,7 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
         {
             text_convert_voice.Speech(trasa.now_instruction(new GeoPoint(location)));
         }
+        screean_tracking.update_descryption(trasa);
     }
 
     @Override

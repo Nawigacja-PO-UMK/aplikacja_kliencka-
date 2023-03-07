@@ -12,6 +12,7 @@ import com.Tracking.DowlandTracking.Building_Tracking;
 import com.Tracking.activity_Tracking;
 import com.Tracking.trasy.trasa;
 import com.Tracking.trasy.trasa_building;
+import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
 import com.search_location.Item;
 import com.Tracking.DowlandTracking.Tracking;
 import com.search_location.search_location;
@@ -36,14 +37,15 @@ public class Mapa_budynku  {
     private ArrayList<Marker>[] markers;
     private activity_Tracking tracking_buliding;
 
-    public Mapa_budynku(Context kontekst, MapView mapView) {
+    public Mapa_budynku(Context kontekst, MapView mapView, screean_Tracking screean_tracking) {
         this.kontekst = kontekst;
         this.mapView = mapView;
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         levelmax=2;
         levelmin=-1;
         level=0;
-        this.tracking_buliding=new activity_Tracking(mapView,kontekst,new trasa_building(),new Building_Tracking(kontekst,0));
+        this.tracking_buliding=new activity_Tracking(mapView,kontekst,new trasa_building(),
+                new Building_Tracking(kontekst,0),screean_tracking);
     }
     public trasa get_trasa()
     {
