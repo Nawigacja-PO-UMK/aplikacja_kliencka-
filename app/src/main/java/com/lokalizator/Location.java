@@ -16,7 +16,8 @@ public class Location  {
     private IMapController mapController;
     private boolean seting_center;
     public android.location.Location Location;
-    public Location(Context kontekst, MapView mapView, Akcje_na_lokacizacji[] Akcje)
+    private uniwersal_location LocationSource;
+    public Location(Context kontekst, MapView mapView, Akcje_na_lokacizacji[] Akcje,uniwersal_location locationSource)
     {
         this.kontekst=kontekst;
         this.mapView=mapView;
@@ -25,7 +26,8 @@ public class Location  {
         mapController.setZoom(10);
         last_kow_location=new GeoPoint(53.017270, 18.60300);
         mapController.setCenter(last_kow_location);
-        this.myLocationNewOverlay = new MyLocationNewOverlay(new uniwersal_location(kontekst),mapView) {
+        this.LocationSource=locationSource;
+        this.myLocationNewOverlay = new MyLocationNewOverlay(this.LocationSource,mapView) {
                 @Override
                 public void onLocationChanged(android.location.Location location, IMyLocationProvider source) {
                 super.onLocationChanged(location, source);
@@ -50,6 +52,10 @@ public class Location  {
         mapView.getOverlays().add(this.myLocationNewOverlay);
     }
 
+
+    public uniwersal_location getLocationSource() {
+        return LocationSource;
+    }
 
     MyLocationNewOverlay getOverlay()
     {

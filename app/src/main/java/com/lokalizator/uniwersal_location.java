@@ -13,11 +13,15 @@ public class uniwersal_location implements IMyLocationProvider {
     private WifiMYLocationProvider wifi;
     boolean location_builging;
 
-    uniwersal_location(Context kontekst)
+    public uniwersal_location(Context kontekst)
     {
         GPS= new GpsMyLocationProvider(kontekst);
         wifi = new WifiMYLocationProvider(kontekst);
         location_builging=false;
+    }
+
+    public boolean isLocation_builging() {
+        return location_builging;
     }
 
     public void setLocation_builging(boolean location_builging) {

@@ -8,10 +8,12 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.Tracking.activity_Tracking_in_building;
+import com.Tracking.DowlandTracking.Building_Tracking;
+import com.Tracking.activity_Tracking;
+import com.Tracking.trasy.trasa;
+import com.Tracking.trasy.trasa_building;
 import com.search_location.Item;
-import com.Tracking.Traking;
-import com.Tracking.trasa;
+import com.Tracking.DowlandTracking.Tracking;
 import com.search_location.search_location;
 
 import org.osmdroid.api.IMapController;
@@ -28,10 +30,11 @@ public class Mapa_budynku  {
     Context kontekst;
     private int levelmax;
     private int levelmin;
-    private Traking traking;
+    private int level;
+    private Tracking traking;
     private Kml_loader loadKml;
     private ArrayList<Marker>[] markers;
-    private activity_Tracking_in_building tracking_buliding;
+    private activity_Tracking tracking_buliding;
 
     public Mapa_budynku(Context kontekst, MapView mapView) {
         this.kontekst = kontekst;
@@ -39,15 +42,18 @@ public class Mapa_budynku  {
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         levelmax=2;
         levelmin=-1;
-        this.tracking_buliding=new activity_Tracking_in_building(mapView,kontekst,true,levelmax,levelmin);
-        //wczytywanie_mapy(0);
+        level=0;
+        this.tracking_buliding=new activity_Tracking(mapView,kontekst,new trasa_building(),new Building_Tracking(kontekst,0));
     }
     public trasa get_trasa()
     {
-        return tracking_buliding.get_trasa();
+        return tracking_buliding.getTrasa();
     }
     public int level() {
-        return tracking_buliding.actual_level();
+        if(null!=tracking_buliding.getTrasa())
+            return ((trasa_building) tracking_buliding.getTrasa()).level();
+            else
+                return 0;
     }
 
     public int levelmax()
@@ -76,9 +82,13 @@ public class Mapa_budynku  {
     @SuppressLint("SuspiciousIndentation")
     public void wczytaj_nowa_mape(int level)
     {
-        mapView.getOverlays().clear();
-        tracking_buliding.add_tracking_map(level-levelmin);
-        wczytywanie_mapy(level);
+        if(level!=this.level) {
+            mapView.getOverlays().clear();
+            trasa_building trasa = (trasa_building) tracking_buliding.getTrasa();
+            //mapView.getOverlays().add(trasa.polyline(level));
+            wczytywanie_mapy(level);
+            this.level=level;
+        }
     }
 
     public void add_tracking(String nameRoom)
@@ -94,5 +104,4 @@ public class Mapa_budynku  {
     {
         tracking_buliding.remove_tracking();
     }
-
 }

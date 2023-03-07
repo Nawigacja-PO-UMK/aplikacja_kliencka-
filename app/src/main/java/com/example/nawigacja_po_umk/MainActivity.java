@@ -18,8 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.Text_convert_voice;
+import com.Tracking.trasy.trasa;
 import com.locaton_Wifi.Pozycjonowanie;
-import com.Tracking.trasa;
+import com.Tracking.trasy.trasa_outside;
 
 import org.osmdroid.config.Configuration;
 
@@ -36,7 +37,6 @@ public class MainActivity extends AppCompatActivity{
     TextView instruction;
     TextView tracking;
     Button remove;
-    Text_convert_voice text_convert_voice;
     @SuppressLint("MissingInflatedId")
     @Override protected void onCreate(Bundle savedInstanceState) {
 
@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity{
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        text_convert_voice=new Text_convert_voice(context);
         //uruchomie jak bedziemy mieli serwer i skończony model od marcina
        /// pozycja.odczytaj_pozycje(mapa.loadKml.znacznik);
     }
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void update_descryption()
     {
-       trasa trasa;
+        com.Tracking.trasy.trasa trasa;
         if(mapa.getMapa_budynku()!=null) {
              trasa = mapa.getMapa_budynku().get_trasa();
         }
@@ -119,7 +118,6 @@ public class MainActivity extends AppCompatActivity{
             tracking.setBackgroundColor(0xFFFFFFFF);
             instruction.setBackgroundColor(0xFFFFFFFF);
             instruction.setAllCaps(true);
-            text_convert_voice.Speech(trasa.print_descryption());
             instruction.setText(trasa.print_descryption());
             tracking.setText(trasa.print_name_tracking());
         }

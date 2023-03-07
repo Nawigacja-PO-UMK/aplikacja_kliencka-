@@ -1,5 +1,6 @@
 package com;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
 
@@ -22,8 +23,10 @@ public class Text_convert_voice {
             }
         });
     }
+    @SuppressLint("SuspiciousIndentation")
     public void Speech(String text)
     {
+        if(!text.equals(""))
         textToSpeech.speak(text,TextToSpeech.QUEUE_FLUSH,null);
     }
 }

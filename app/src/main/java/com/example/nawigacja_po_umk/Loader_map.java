@@ -12,14 +12,19 @@ import org.osmdroid.views.MapView;
 public class Loader_map implements Akcje_na_lokacizacji {
 
     Mapa_budynku mapa_budynku;
-   private BoundingBox box;
+   private com.lokalizator.uniwersal_location location;
+    private BoundingBox box;
     private MapView mapView;
     private  Context kontekst;
-   Loader_map(BoundingBox box, MapView mapView, Context kontekst)
+
+    Loader_map(BoundingBox box, MapView mapView, Context kontekst, com.lokalizator.uniwersal_location location)
    {
        this.box=box;
        this.kontekst=kontekst;
        this.mapView=mapView;
+       mapa_budynku=null;
+       this.location=location;
+
    }
 
 
@@ -30,16 +35,28 @@ public class Loader_map implements Akcje_na_lokacizacji {
     }
 
     @Override
-    public void Akcja(Location location) {
-       if(mapa_budynku==null)
-      mapa_budynku= new Mapa_budynku(kontekst,mapView);
-       else
-           if(mapa_budynku.level()!=(int)location.getAltitude())
-                mapa_budynku.wczytaj_nowa_mape(mapa_budynku.level());
+    public void Akcja(Location location)
+    {
+           if (mapa_budynku == null) {
+               mapa_budynku = new Mapa_budynku(kontekst, mapView);
+               mapa_budynku.wczytywanie_mapy(0);
+           }
+
+           if(this.location.isLocation_builging())
+           {
+               if (mapa_budynku.level() != (int) location.getAltitude())
+                   mapa_budynku.wczytaj_nowa_mape((int) location.getAltitude());
+           }
+           else
+           {
+               this.location.setLocation_builging(true);
+           }
+
     }
 
     @Override
     public void Akcje_is_false(Location location) {
         mapa_budynku=null;
+        this.location.setLocation_builging(false);
     }
 }

@@ -1,50 +1,51 @@
 package com.Tracking;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Address;
 import android.location.Location;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.Text_convert_voice;
+import com.Tracking.DowlandTracking.Tracking;
+import com.Tracking.trasy.trasa;
 import com.example.nawigacja_po_umk.Add_marker;
 import com.lokalizator.Akcje_na_lokacizacji;
 import com.search_location.search_location;
 
-import org.osmdroid.bonuspack.location.POI;
 import org.osmdroid.bonuspack.routing.Road;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Polyline;
 
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
+public class activity_Tracking implements Akcje_na_lokacizacji {
 
-public class activity_Tracking_outside implements Akcje_na_lokacizacji {
-
-    protected ArrayList<Marker>  markers;
-    public com.Tracking.trasa trasa;
+    public com.Tracking.trasy.trasa trasa;
     public MapView mapView;
     protected Context kontekst;
-    protected Traking traking;
+    protected Tracking traking;
     protected GeoPoint location;
-    protected  double delta=0.0001;
+    protected  double delta=0.0000005;
     protected boolean now_tracking;
-    public activity_Tracking_outside(MapView mapView, Context kontekst, boolean building) {
-
+    trasa typtrasa;
+    Text_convert_voice text_convert_voice;
+    boolean voice;
+    public activity_Tracking(MapView mapView, Context kontekst, trasa typtrasa, Tracking tracking)  {
+        this.typtrasa=typtrasa;
         this.kontekst=kontekst;
         this.mapView=mapView;
-        this.traking=new Traking(kontekst,0,building);
+        this.traking=tracking;
         this.location=null;
-        this.markers=new ArrayList<Marker>();
         now_tracking=false;
+        this.text_convert_voice=new Text_convert_voice(kontekst);
+        voice=true;
     }
 
+    public void setVoice(boolean voice)
+    {
+        this.voice=voice;
+    }
 
-    protected com.Tracking.trasa getTrasa(int index) {
+    public trasa getTrasa() {
         return trasa;
     }
 
@@ -56,20 +57,22 @@ public class activity_Tracking_outside implements Akcje_na_lokacizacji {
         GeoPoint newposition= new GeoPoint(location.getLatitude(),location.getLongitude());
         if(this.location!=null)
         {
-            markers.add(Add_marker.Add_marker(location, mapView));
+
             if (trasa != null && trasa.is_trasa())
             {
                 remove_polyline(trasa.polyline);
-                trasa.add_trasa(traking.add_tracking(0, newposition),search_location.search_name_Adress(location));
+                trasa.add_trasa(traking.add_tracking(0, newposition),search_location.search_name_Adress(location),
+                        Add_marker.Add_marker(location, mapView));
             }
             else {
-
                 Road road=traking.tracking(0,this.location,newposition,0);
-                trasa=new trasa(road,search_location.search_name_Adress(location),kontekst,mapView);
+                typtrasa.new_instancion(road,search_location.search_name_Adress(location),kontekst,mapView
+                ,Add_marker.Add_marker(location, mapView));
+                trasa=typtrasa;
             }
             mapView.getOverlays().add(0,trasa.polyline());
             mapView.getOverlays().addAll(1,trasa.bulid_markers_Tracking());
-            mapView.getOverlays().add(markers.get(markers.size()-1));
+            trasa.add_last_Target();
             mapView.invalidate();
         }
         else
@@ -87,11 +90,15 @@ public class activity_Tracking_outside implements Akcje_na_lokacizacji {
             synchronized (trasa) {
                 remove_polyline(trasa.polyline);
                 aktualization_trasa(newlocation);
-                if(trasa.markers.size()>0)
-                 mapView.getOverlays().removeAll(trasa.markers);
+                if(trasa.markers_instruction.size()>0)
+                 mapView.getOverlays().removeAll(trasa.markers_instruction);
                 trasa.remove_Markers();
                 mapView.getOverlays().add(0, trasa.polyline());
                 mapView.getOverlays().addAll(1,trasa.bulid_markers_Tracking());
+                if(!trasa.is_trasa())
+                {
+                    trasa=null;
+                }
                 mapView.invalidate();
             }
 
@@ -99,44 +106,44 @@ public class activity_Tracking_outside implements Akcje_na_lokacizacji {
         now_tracking=false;
 
     }
-
-
      public void remove_tracking()
     {
         if(trasa!=null)
         {
             remove_polyline(trasa.polyline);
-            mapView.getOverlays().removeAll(trasa.getMarkers());
+            mapView.getOverlays().removeAll(trasa.getMarkers_instruction());
             trasa.remove_Markers();
+            trasa.removeTargets();
             trasa = null;
+            traking.Remove_Tracking();
         }
-        for(int i=0;i<markers.size();i++)
-            markers.get(i).remove(mapView);
+
         mapView.invalidate();
     }
 
     protected void aktualization_trasa(GeoPoint newlocation)
     {
-
-            if(!trasa.is_end_tracking(newlocation))
-                if(trasa.is_route(newlocation))
-                    trasa.ActualizacjaLotalizacji(traking.Aktulaizuj_location(0, newlocation));
-                else
-                    trasa.ActualizacjaLotalizacji(newlocation);
+            if(!trasa.is_end_tracking(newlocation)) {
+                if (!trasa.is_route(newlocation))
+                        trasa.ActualizacjaLotalizacji(traking.Aktulaizuj_location(0, newlocation));
+                    else
+                        trasa.ActualizacjaLotalizacji(newlocation);
+            }
             else
                 end_tracking(0);
 
     }
     void end_tracking(int index)
     {
-        mapView.getOverlays().remove(markers.get(index));
-        markers.remove(index);
+
         trasa.remove_tracking(index);
-        mapView.getOverlays().removeAll(trasa.markers);
+        mapView.getOverlays().removeAll(trasa.markers_instruction);
         trasa.remove_Markers();
+        trasa.removeTarget(index);
         mapView.invalidate();
         now_tracking=true;
         traking.Remove_Tracking(index);
+        trasa.bulid_markers_Tracking();
         Toast.makeText(kontekst, "Dodarłeś do celu", Toast.LENGTH_SHORT).show();
     }
 
@@ -151,15 +158,10 @@ public class activity_Tracking_outside implements Akcje_na_lokacizacji {
     @Override
     public boolean warunek(android.location.Location location) {
 
-
         if(trasa!=null  && !now_tracking)
         {
-            ArrayList<GeoPoint> points = trasa.print_point();
-            GeoPoint point_l=new GeoPoint(location);
-            if(points.size()>1)
-            return trasa.odległość(points.get(0),point_l)> delta;
-            else
-                return false;
+            return trasa.odległość(new GeoPoint(location),this.location)> delta;
+
         }
         else
             if(!now_tracking)
@@ -173,11 +175,16 @@ public class activity_Tracking_outside implements Akcje_na_lokacizacji {
     public void Akcja(android.location.Location location) {
 
         aktualizuj_tracking(new GeoPoint(location.getLatitude(),location.getLongitude()));
-
+        if(voice && trasa!=null)
+        {
+            text_convert_voice.Speech(trasa.now_instruction(new GeoPoint(location)));
+        }
     }
 
     @Override
     public void Akcje_is_false(Location location) {
 
     }
+
+
 }
