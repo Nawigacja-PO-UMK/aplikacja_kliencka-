@@ -99,7 +99,10 @@ public abstract class trasa {
         minidistance.distance=Double.MAX_VALUE;
         minidistance.index=-1;
         if(roads.size()>0) {
-            for (int i = 0; i < roads.get(0).mRouteHigh.size(); i++) {
+            int kroki=roads.get(0).mRouteHigh.size();
+            if(roads.get(0).mRouteHigh.size()>100)
+                kroki=50;
+            for (int i = 0; i < kroki; i++) {
                 if(minidistance.distance>odległość(location,roads.get(0).mRouteHigh.get(i))-0.0000002) {
                     minidistance.distance = odległość(location, roads.get(0).mRouteHigh.get(i));
                     minidistance.index=i;
@@ -108,6 +111,7 @@ public abstract class trasa {
         }
         return minidistance;
     }
+
     public double from_route(GeoPoint location)
     {
         if(roads.size()>0 && roads.get(0).mRouteHigh.size()>0)
@@ -128,9 +132,12 @@ public abstract class trasa {
     }
     public String now_instruction(GeoPoint location)
     {
-        for(int i=0;i<roads.get(0).mNodes.size();i++)
+        int kroki=roads.get(0).mNodes.size();
+        if(kroki>100)
+        kroki=100;
+        for(int i=0;i<kroki;i++)
         {
-            if(odległość(roads.get(0).mNodes.get(i).mLocation,location)<delta/4) {
+            if(odległość(roads.get(0).mNodes.get(i).mLocation,location)<delta) {
                 String instructions= roads.get(0).mNodes.get(i).mInstructions;
                 for(int j=i;j>=0;j--)
                 {
@@ -139,15 +146,17 @@ public abstract class trasa {
                 return instructions;
             }
         }
-        return "";
+        return null;
     }
     public String print_descryption()
     {
         String allinstructions=new String();
         String instruction;
-        for (int i =0;i<roads.size();i++) {
-            Road road= roads.get(i);
-            for(int j=0;j<road.mNodes.size();j++)
+        int kroki=roads.get(0).mNodes.size();
+            Road road= roads.get(0);
+            if(kroki>10)
+                kroki=10;
+            for(int j=0;j<kroki;j++)
             {
                 if (j==0) {
                     allinstructions += "zacznij na końcu\n\n";
@@ -165,7 +174,6 @@ public abstract class trasa {
                     allinstructions+="Powinineś zobaczyć punkt docelowy";
                 allinstructions+="\n\n";
             }
-        }
         return allinstructions;
     }
 
@@ -182,7 +190,7 @@ public abstract class trasa {
 
         String tracking = new String();
         for (int i = 0; i < Tracking.size() ; i++)
-            tracking+=Tracking.get(i)+" "+roads.get(i).getLengthDurationText(context,roads.get(i).mLength,roads.get(i).mDuration);
+            tracking+=Tracking.get(i)+" "+roads.get(i).getLengthDurationText(context,roads.get(i).mLength,roads.get(i).mDuration)+"\n";
         //tracking+=Tracking.get(i)+"\t\t\t Czas:"+ roads.get(i).mDuration+"\t\t\t"+(roads.get(i).mLength*1000)+" m\n";
         return tracking;
     }

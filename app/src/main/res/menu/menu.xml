@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nawigation"
+        android:title="Nawigacja"
+        android:icon="@drawable/icons8nearme24"></item>
+    <item android:title="mapy"
+        android:id="@+id/mapy"
+        android:icon="@drawable/icons8map50"/>
+    <item android:title="Czas Przelotu(Beta)"
+        android:id="@+id/time"
+        android:icon="@drawable/icons8wifirouter50"></item>
+    <item android:title="Parking"
+        android:icon="@drawable/icons8parking80"
+        android:id="@+id/parking"></item>
+    <item android:title="Mapy Budynków"
+        android:icon="@drawable/icons8studiofloorplan50"
+        android:id="@+id/mapy_building"></item>
+    <item android:title="Zapisane Miejsca"
+        android:icon="@drawable/icons8mapediting48"
+        android:id="@+id/save"></item>
+</menu>

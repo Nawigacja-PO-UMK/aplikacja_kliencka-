@@ -10,6 +10,7 @@ import org.osmdroid.bonuspack.routing.RoadNode;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Polyline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,6 @@ public class trasa_outside extends trasa {
     @Override
     public boolean is_end_tracking(GeoPoint newpoint_start)
     {
-
             int index = roads.get(0).mRouteHigh.size() - 1;
             return odległość(newpoint_start, roads.get(0).mRouteHigh.get(index)) < delta;
     }
@@ -82,14 +82,16 @@ public class trasa_outside extends trasa {
                GeoPoint point=Geopoint_between_Geopoint(tmpRoad.mRouteHigh.get(miniDistance.index),
                        between,
                        odległośćB/miniDistance.distance);
-               for(int i=miniDistance.index-1; i>=0;i--)
+               for(int i=miniDistance.index-1; i>=0;i--) {
                    tmpRoad.mRouteHigh.remove(i);
-               if(is_remove_lost)
-                   tmpRoad.mRouteHigh.remove(0);
-               tmpRoad.mRouteHigh.add(0,point);
+
+               }
+                   if(is_remove_lost) {
+                       tmpRoad.mRouteHigh.remove(0);
+                   }
+                   tmpRoad.mRouteHigh.add(0,point);
                tmpRoad.mLength = distance(0)/1000;
                tmpRoad.mDuration=tmpRoad.mLength*700;
-               Toast.makeText(context, String.valueOf(tmpRoad.mLength), Toast.LENGTH_SHORT).show();
            }
             roads.set(0, tmpRoad);
     }

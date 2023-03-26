@@ -4,6 +4,7 @@ import static java.lang.Integer.parseInt;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Address;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -22,9 +23,11 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale;
 
-public class Mapa_budynku  {
+public class Mapa_budynku implements Serializable {
 
     private MapView mapView;
     private IMapController mapController;
@@ -51,11 +54,17 @@ public class Mapa_budynku  {
     {
         return tracking_buliding.getTrasa();
     }
+
+
     public int level() {
+                return level;
+    }
+    public int get_level_trasa()
+    {
         if(null!=tracking_buliding.getTrasa())
             return ((trasa_building) tracking_buliding.getTrasa()).level();
-            else
-                return 0;
+        else
+            return Integer.MAX_VALUE;
     }
 
     public int levelmax()
@@ -97,7 +106,12 @@ public class Mapa_budynku  {
     {
         Item item = search_location.search_in_building(nameRoom, loadKml.print_item_KML());
         if(item!=null) {
-                tracking_buliding.add_tracking(item);
+            Locale locale=new Locale("PL");
+            Address address= new Address(locale);
+            address.setFeatureName(item.item.mName);
+            address.setLatitude(item.item.getBoundingBox().getCenterLatitude());
+            address.setLongitude(item.item.getBoundingBox().getCenterLongitude());
+                tracking_buliding.add_tracking(address);
         }
         else
             Toast.makeText(kontekst, "nie właściwa nazwa pomieszczenia", Toast.LENGTH_SHORT).show();

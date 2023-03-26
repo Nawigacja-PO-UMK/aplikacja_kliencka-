@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.trackingActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/parent_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="1dp">
+
+
+        <TextView
+            android:id="@+id/instruction"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="600dp"
+            android:textAlignment="center"
+            android:scrollbars = "vertical" />
+        <TextView
+            android:id="@+id/tracking"
+            android:layout_width="350dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="120dp"
+            android:textAlignment="center"
+            android:scrollbars = "vertical"
+            android:textFontWeight="20"
+            />
+
+        <Button
+            android:id="@+id/remove"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="280dp"
+            android:layout_marginTop="480dp"
+            android:text="kasuj"
+
+            tools:visibility="invisible" />
+
+
+    </RelativeLayout>
+
+</FrameLayout>

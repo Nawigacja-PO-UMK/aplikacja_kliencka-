@@ -24,10 +24,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.UserHandle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.nawigacja_po_umk.ekranMarker.ekran_marker;
 import com.search_location.Item;
 import com.search_location.search_location;
 
@@ -56,12 +58,12 @@ public class Add_marker {
         marker.setTitle(opis);
         return marker;
     }
-    public static Marker Add_marker(Address address, MapView mapView)
+    public static Marker Add_marker(Address address,Context kontext, MapView mapView)
     {
         Marker marker =new Marker(mapView);
         marker.setPosition(new GeoPoint(address.getLatitude(),address.getLongitude()));
-        marker.setTitle(search_location.search_name_Adress(address));
-        marker.setSnippet(address.getLocality());
+        marker.setRelatedObject(address);
+        marker.setInfoWindow(new ekran_marker(mapView,kontext));
         return marker;
     }
     }

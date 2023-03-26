@@ -1,5 +1,8 @@
 package com.Tracking.DowlandTracking;
 
+import static com.google.android.material.internal.ContextUtils.getActivity;
+
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -15,7 +18,7 @@ public abstract class Tracking {
     Stack<GeoPoint> location;
     int level;
     int lost_level;
-
+    Dialog dialog;
 
     public Tracking(Context context, int level)
     {

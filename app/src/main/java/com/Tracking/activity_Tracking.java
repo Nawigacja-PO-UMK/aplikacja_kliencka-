@@ -1,5 +1,6 @@
 package com.Tracking;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.location.Address;
 import android.location.Location;
@@ -18,6 +19,9 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Polyline;
 
+import java.sql.Time;
+import java.util.Date;
+
 public class activity_Tracking implements Akcje_na_lokacizacji {
 
     public com.Tracking.trasy.trasa trasa;
@@ -25,12 +29,15 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
     protected Context kontekst;
     protected Tracking traking;
     protected GeoPoint location;
-    protected  double delta=1;
+    protected  double delta=1.5;
     protected boolean now_tracking;
     private trasa typtrasa;
+    long time_last_actualization;
     private Text_convert_voice text_convert_voice;
     boolean voice;
     private screean_Tracking screean_tracking;
+    Dialog dialog_loader;
+    boolean first_location;
     public activity_Tracking(MapView mapView, Context kontekst, trasa typtrasa, Tracking tracking, screean_Tracking screean_tracking)  {
         this.typtrasa=typtrasa;
         this.kontekst=kontekst;
@@ -41,6 +48,14 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
         this.text_convert_voice=new Text_convert_voice(kontekst);
         voice=true;
         this.screean_tracking=screean_tracking;
+        creating_dialog_tracking();
+        first_location=false;
+    }
+    private void  creating_dialog_tracking()
+    {
+        dialog_loader= new Dialog(kontekst);
+        dialog_loader.setTitle("loading");
+        dialog_loader.setTitle("Ustalanie trasy");
     }
 
     public void setVoice(boolean voice)
@@ -65,12 +80,12 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
             {
                 remove_polyline(trasa.polyline);
                 trasa.add_trasa(traking.add_tracking(0, newposition),search_location.search_name_Adress(location),
-                        Add_marker.Add_marker(location, mapView));
+                        Add_marker.Add_marker(location,kontekst, mapView));
             }
             else {
                 Road road=traking.tracking(0,this.location,newposition,0);
                 typtrasa.new_instancion(road,search_location.search_name_Adress(location),kontekst,mapView
-                ,Add_marker.Add_marker(location, mapView));
+                ,Add_marker.Add_marker(location,kontekst, mapView));
                 trasa=typtrasa;
             }
             mapView.getOverlays().add(0,trasa.polyline());
@@ -89,7 +104,6 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
         now_tracking=true;
         location=newlocation;
         if(trasa!=null) {
-
             synchronized (trasa) {
                 remove_polyline(trasa.polyline);
                 aktualization_trasa(newlocation);
@@ -127,9 +141,11 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
     protected void aktualization_trasa(GeoPoint newlocation)
     {
             if(!trasa.is_end_tracking(newlocation)) {
-                if (!trasa.is_route(newlocation))
-                        trasa.ActualizacjaLotalizacji(traking.Aktulaizuj_location(0, newlocation));
-                    else
+                if (!trasa.is_route(newlocation)) {
+                    dialog_loader.show();
+                    trasa.ActualizacjaLotalizacji(traking.Aktulaizuj_location(0, newlocation));
+                    dialog_loader.dismiss();
+                }   else
                         trasa.ActualizacjaLotalizacji(newlocation);
             }
             else
@@ -144,13 +160,10 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
         trasa.remove_Markers();
         trasa.removeTarget(index);
         mapView.invalidate();
-        now_tracking=true;
         traking.Remove_Tracking(index);
         trasa.bulid_markers_Tracking();
         Toast.makeText(kontekst, "Dodarłeś do celu", Toast.LENGTH_SHORT).show();
     }
-
-
 
     protected void  remove_polyline(Polyline polyline)
     {
@@ -160,26 +173,24 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
 
     @Override
     public boolean warunek(android.location.Location location) {
-
-        if(trasa!=null  && !now_tracking)
-        {
-            return trasa.odległość(new GeoPoint(location),this.location)> delta;
-
-        }
-        else
-            if(!now_tracking)
-                return true;
-            else
+            if (!first_location) {
+                this.location = new GeoPoint(location);
+                first_location = true;
+                time_last_actualization = (new Date()).getTime();
+            }
+            if (trasa != null && !now_tracking && (new Date()).getTime() - time_last_actualization > 200) {
+                time_last_actualization = (new Date()).getTime();
+                return trasa.odległość(new GeoPoint(location), this.location) > delta;
+            } else
                 return false;
     }
-
 
     @Override
     public void Akcja(android.location.Location location) {
 
         aktualizuj_tracking(new GeoPoint(location.getLatitude(),location.getLongitude()));
         if(voice && trasa!=null)
-        {
+       {
             text_convert_voice.Speech(trasa.now_instruction(new GeoPoint(location)));
         }
         screean_tracking.update_descryption(trasa);

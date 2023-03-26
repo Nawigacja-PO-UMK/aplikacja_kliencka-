@@ -5,128 +5,72 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
-import com.Text_convert_voice;
-import com.Tracking.trasy.trasa;
+import com.example.nawigacja_po_umk.Activity.search;
+import com.example.nawigacja_po_umk.Activity.trackingActivity;
+import com.example.nawigacja_po_umk.Mapa;
+import com.example.nawigacja_po_umk.Nawigation_Fragment.Nawigation;
+import com.example.nawigacja_po_umk.R;
+import com.example.nawigacja_po_umk.ekranMarker.ekran_marker;
 import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
-import com.locaton_Wifi.Pozycjonowanie;
-import com.Tracking.trasy.trasa_outside;
+import com.google.android.material.navigation.NavigationView;
+import com.search_location.search_location;
 
+import org.osmdroid.bonuspack.location.POI;
 import org.osmdroid.config.Configuration;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.util.Comparator;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity{
 
     private Context context;
-    Pozycjonowanie pozycja;
-    EditText room;
-    Mapa mapa;
-    TextView instruction;
-    TextView tracking;
-    Button remove;
-    @SuppressLint("MissingInflatedId")
+    public Mapa mapa;
+    MapView mapView;
+    FragmentManager fragmentManager;
+    public screean_Tracking screean_tracking;
+    @SuppressLint({"MissingInflatedId", "ResourceType"})
     @Override protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        fragmentManager=getSupportFragmentManager();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Context ctx = getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         setContentView(R.layout.activity_main);
-        room=findViewById(R.id.editTextTextPersonName);
         context = this;
-        instruction= (TextView) findViewById(R.id.instruction);
-        tracking=(TextView) findViewById(R.id.tracking);
-        remove=(Button)findViewById(R.id.remove);
-        tracking.setMovementMethod(new ScrollingMovementMethod());
-                ///pozycjonowanie
-
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PackageManager.PERMISSION_GRANTED);
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
 
-        screean_Tracking  screean_tracking=new screean_Tracking(instruction,tracking);
-        mapa= new Mapa(context,findViewById(R.id.map),screean_tracking);
-        try {
-            pozycja = new Pozycjonowanie(context);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        //uruchomie jak bedziemy mieli serwer i skończony model od marcina
-       /// pozycja.odczytaj_pozycje(mapa.loadKml.znacznik);
+        NavigationView navigationView= findViewById(R.id.navigation_bar_item_icon_view);
+        navigationView.setItemIconTintList(null);
+        NavController navController= Navigation.findNavController(this,R.id.my_nav_host_fragment);
+        NavigationUI.setupWithNavController(navigationView,navController);
     }
 
-    public void removeTracking(View view)
+     public void replace_fragment(Fragment fragment)
     {
-        if(mapa.getMapa_budynku()!=null)
-            mapa.getMapa_budynku().remove_tracking();
-        else
-            mapa.remove_tracking();
-        update_descryption();
-    }
-
-
-    @SuppressLint("SuspiciousIndentation")
-    public void LewelUpMap(View view)
-    {
-        if(mapa.getMapa_budynku()!=null && mapa.getMapa_budynku().levelmax()>mapa.getMapa_budynku().level()) {
-            mapa.getMapa_budynku().wczytaj_nowa_mape(mapa.getMapa_budynku().level() + 1);
-            update_descryption();
-        }
-    }
-
-    public void LewelDownMap(View view)
-    {
-        if(mapa.getMapa_budynku()!=null && mapa.getMapa_budynku().Levelmin()<mapa.getMapa_budynku().level()) {
-            mapa.getMapa_budynku().wczytaj_nowa_mape(mapa.getMapa_budynku().level() - 1);
-            update_descryption();
-        }
-    }
-
-    public void trasowanie(View view) throws IOException {
-
-        if(mapa.getMapa_budynku()!=null)
-            mapa.getMapa_budynku().add_tracking(room.getText().toString());
-        else
-            mapa.add_tracking(room.getText().toString());
-    instruction.setMovementMethod(new ScrollingMovementMethod());
-    update_descryption();
-    }
-
-    private void update_descryption()
-    {
-        com.Tracking.trasy.trasa trasa;
-        if(mapa.getMapa_budynku()!=null) {
-             trasa = mapa.getMapa_budynku().get_trasa();
-        }
-        else
-            trasa=mapa.getTracking().trasa;
-        if(trasa!= null) {
-            tracking.setBackgroundColor(0xFFFFFFFF);
-            instruction.setBackgroundColor(0xFFFFFFFF);
-            instruction.setAllCaps(true);
-            instruction.setText(trasa.print_descryption());
-            tracking.setText(trasa.print_name_tracking());
-        }
-        else
-        {
-            tracking.setBackgroundColor(0);
-            instruction.setBackgroundColor(0);
-            instruction.setText("");
-            tracking.setText("");
-        }
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.conteiner,fragment);
+        fragmentTransaction.commit();
     }
 }

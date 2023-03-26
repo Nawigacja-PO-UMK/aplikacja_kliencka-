@@ -2,6 +2,7 @@ package com;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.speech.tts.TextToSpeech;
 
 import java.util.Locale;
@@ -26,7 +27,8 @@ public class Text_convert_voice {
     @SuppressLint("SuspiciousIndentation")
     public void Speech(String text)
     {
-        if(!text.equals(""))
+        if(text!=null)
         textToSpeech.speak(text,TextToSpeech.QUEUE_FLUSH,null);
     }
+
 }

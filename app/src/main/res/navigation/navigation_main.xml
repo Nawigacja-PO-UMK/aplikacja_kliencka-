@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_main"
+    app:startDestination="@id/nawigation">
+
+    <fragment
+        android:id="@+id/nawigation"
+        android:name="com.example.nawigacja_po_umk.Nawigation_Fragment.Nawigation"
+        android:label="fragment_nawigation"
+        tools:layout="@layout/fragment_nawigation" />
+    <fragment
+        android:id="@+id/mapy"
+        android:name="com.example.nawigacja_po_umk.Nawigation_Fragment.mapy_fragment"
+        android:label="mapy"
+        tools:layout="@layout/fragment_mapy_fragment" />
+    <fragment
+        android:id="@+id/time"
+        android:name="com.example.nawigacja_po_umk.Nawigation_Fragment.time"
+        android:label="time"
+        tools:layout="@layout/fragment_time" />
+    <fragment
+        android:id="@+id/parking"
+        android:name="com.example.nawigacja_po_umk.Nawigation_Fragment.Parking_Fragment"
+        android:label="parking"
+        tools:layout="@layout/fragment_parking_" />
+    <fragment
+        android:id="@+id/mapy_building"
+        android:name="com.example.nawigacja_po_umk.Nawigation_Fragment.map_building"
+        android:label="mapa_building"
+        tools:layout="@layout/fragment_map_building" />
+    <fragment
+        android:id="@+id/save"
+        android:name="com.example.nawigacja_po_umk.Nawigation_Fragment.save"
+        android:label="fragment_save"
+        tools:layout="@layout/fragment_save" />
+
+</navigation>

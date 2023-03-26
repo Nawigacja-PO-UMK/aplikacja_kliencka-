@@ -2,7 +2,11 @@ package com.example.nawigacja_po_umk;
 
 import android.content.Context;
 import android.location.Location;
+import android.os.Bundle;
 
+import androidx.fragment.app.Fragment;
+
+import com.example.nawigacja_po_umk.Activity.in_building;
 import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
 import com.loader_Map_Building.Mapa_budynku;
 import com.lokalizator.Akcje_na_lokacizacji;
@@ -18,6 +22,7 @@ public class Loader_map implements Akcje_na_lokacizacji {
     private MapView mapView;
     private  Context kontekst;
     private screean_Tracking screean_tracking;
+    in_building in_door;
     Loader_map(BoundingBox box, MapView mapView, Context kontekst, com.lokalizator.uniwersal_location location, screean_Tracking screean_tracking)
    {
        this.box=box;
@@ -26,6 +31,7 @@ public class Loader_map implements Akcje_na_lokacizacji {
        mapa_budynku=null;
        this.location=location;
        this.screean_tracking=screean_tracking;
+       in_door= new in_building();
    }
 
 
@@ -41,23 +47,30 @@ public class Loader_map implements Akcje_na_lokacizacji {
            if (mapa_budynku == null) {
                mapa_budynku = new Mapa_budynku(kontekst, mapView,screean_tracking);
                mapa_budynku.wczytywanie_mapy(0);
+               Bundle bundle=new Bundle();
+               bundle.putSerializable("mapa",mapa_budynku);
+               in_door.setArguments(bundle);
+               ((MainActivity)kontekst).replace_fragment(in_door);
            }
-
+/*
            if(this.location.isLocation_builging())
-           {
-               if (mapa_budynku.level() != (int) location.getAltitude())
-                   mapa_budynku.wczytaj_nowa_mape((int) location.getAltitude());
-           }
+            {
+             if (mapa_budynku.get_level_trasa() == )
+              mapa_budynku.wczytaj_nowa_mape((int) location.getAltitude());
+            }
            else
            {
                this.location.setLocation_builging(true);
            }
+           /
+ */
 
     }
 
     @Override
     public void Akcje_is_false(Location location) {
         mapa_budynku=null;
+      //  ((MainActivity)kontekst).replace_fragment(new Fragment());
         this.location.setLocation_builging(false);
     }
 }
