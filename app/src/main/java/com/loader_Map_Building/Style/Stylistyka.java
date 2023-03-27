@@ -98,10 +98,10 @@ public class Stylistyka {
 
             if(!nazwa.matches("steps")) Objects.requireNonNull(pomieszczenie_hashtable.get(nazwa)).Dodaj_pomieszczenie(feature);
 
-            if(!nazwa.matches("room|toilet|toilets|storage|elevator|"))
+            if(!nazwa.matches("room|toilet|toilets|storage|elevator"))
             {
                 Objects.requireNonNull(etykieta_hashtable.get(nazwa)).addMarker(mapView,punkt);
-                Objects.requireNonNull(etykieta_hashtable.get(nazwa)).addMarker(punkt,name, 80);
+                if(!nazwa.matches("steps"))Objects.requireNonNull(etykieta_hashtable.get(nazwa)).addMarker(punkt,name, 80);
             }
             else Objects.requireNonNull(etykieta_hashtable.get(nazwa)).addMarker(punkt,name,0);
         }
