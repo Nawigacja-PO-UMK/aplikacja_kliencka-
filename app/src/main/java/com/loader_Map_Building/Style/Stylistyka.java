@@ -100,7 +100,7 @@ public class Stylistyka {
             if(!nazwa.matches("room|toilet|toilets|storage|elevator|"))
             {
                 Objects.requireNonNull(etykieta_hashtable.get(nazwa)).addMarker(mapView,punkt);
-                Objects.requireNonNull(etykieta_hashtable.get(nazwa)).addMarker(punkt,name, 95);
+                Objects.requireNonNull(etykieta_hashtable.get(nazwa)).addMarker(punkt,name, 80);
             }
             else Objects.requireNonNull(etykieta_hashtable.get(nazwa)).addMarker(punkt,name,0);
         }
