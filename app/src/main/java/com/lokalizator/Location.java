@@ -57,7 +57,7 @@ public class Location  {
         return LocationSource;
     }
 
-    MyLocationNewOverlay getOverlay()
+    public MyLocationNewOverlay getOverlay()
     {
         return myLocationNewOverlay;
     }
