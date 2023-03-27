@@ -1,17 +1,18 @@
 package com;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class RangingWithRTT
 {
-    public static void main(String[] args) throws UnknownHostException, SocketException
+    public static void main(String[] args) throws IOException
     {
-        InetAddress target = InetAddress.getByName("Target");
+        InetAddress target = InetAddress.getByName("192.168.*.**");
 
-        int numPackets = 5;
-        long totalTime = 0;
+        int numPackets = 1;
+        long total = 0;
         int receivedPackets = 0;
 
         for(int i = 0; i < numPackets; i++) {
@@ -36,6 +37,9 @@ public class RangingWithRTT
         {
             long averageRtt = total/receivedPackets;
             System.out.println("Average RTT: " + averageRtt + "ns");
+
+            double distance = (averageRtt * 10e9) / 2.0 * 299792458.0;
+            System.out.println("Distance from source: (+/-) " + distance + "m");
         }
         else
         {
