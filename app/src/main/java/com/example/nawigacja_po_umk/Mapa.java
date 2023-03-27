@@ -4,6 +4,7 @@ import static java.lang.Integer.parseInt;
 
 import android.content.Context;
 import android.location.Address;
+import android.os.Bundle;
 
 import com.Tracking.DowlandTracking.OSRM_Tracking;
 import com.Tracking.activity_Tracking;
@@ -34,12 +35,13 @@ public class Mapa implements Serializable , MapEventsReceiver {
     public MapView mapView;
     public IMapController mapController;
     Context kontekst;
-
+    MapEventsOverlay mapEventsOverlay;
     private Location location;
     private Mapa_budynku mapa_budynku;
     private Loader_map loader_map;
     public activity_Tracking tracking;
     public Marker marker;
+    uniwersal_location  sourceLocation;
 
     public Mapa(Context kontekst, MapView mapView, screean_Tracking screean_tracking)
     {
@@ -54,9 +56,9 @@ public class Mapa implements Serializable , MapEventsReceiver {
          mRotationGestureOverlay.setEnabled(true);
         mapView.setMultiTouchControls(true);
         mapView.getOverlays().add(mRotationGestureOverlay);
-        MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(kontekst, this);
+        mapEventsOverlay = new MapEventsOverlay(kontekst, this);
         mapView.getOverlays().add(0, mapEventsOverlay);
-        uniwersal_location  sourceLocation=new uniwersal_location(kontekst);
+        sourceLocation=new uniwersal_location(kontekst);
         this.loader_map= new Loader_map(new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197),
                mapView,kontekst,sourceLocation,screean_tracking);
         tracking=new activity_Tracking(mapView,kontekst,new trasa_outside(), new OSRM_Tracking(kontekst,0),screean_tracking);
@@ -97,14 +99,32 @@ public class Mapa implements Serializable , MapEventsReceiver {
 
     @Override
     public boolean longPressHelper(GeoPoint p) {
-        List<Address> addresses= search_location.search(p,1);
-        if(marker!=null)
+        List<Address> addresses = search_location.search(p, 1);
+        if (marker != null)
             mapView.getOverlays().remove(marker);
-       if(marker==null || marker.getPosition().distanceToAsDouble(p)>20) {
-           marker = Add_marker.Add_marker(addresses.get(0), kontekst, mapView);
-           mapView.getOverlays().add(marker);
-       }else
-           marker=null;
-       return true;
+        if (marker == null || marker.getPosition().distanceToAsDouble(p) > 20) {
+            marker = Add_marker.Add_marker(addresses.get(0), kontekst, mapView);
+            mapView.getOverlays().add(marker);
+        } else
+            marker = null;
+        return true;
     }
+       public void   newInstance(MapView mapView,screean_Tracking screean_tracking) {
+        this.mapView=mapView;
+        setTileSource_Mapbox();
+           mapController = mapView.getController();
+           mapController.setZoom(15);
+           mapView.setMultiTouchControls(true);
+           RotationGestureOverlay mRotationGestureOverlay = new RotationGestureOverlay(kontekst, mapView);
+           mRotationGestureOverlay.setEnabled(true);
+           mapView.setMultiTouchControls(true);
+           mapView.getOverlays().add(mRotationGestureOverlay);
+           mapEventsOverlay = new MapEventsOverlay(kontekst, this);
+           mapView.getOverlays().add(0, mapEventsOverlay);
+           sourceLocation=new uniwersal_location(kontekst);
+           this.loader_map= new Loader_map(new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197),
+                   mapView,kontekst,sourceLocation,screean_tracking);
+           tracking.newinstancjon(mapView,screean_tracking);
+          location=new Location(kontekst,mapView, new Akcje_na_lokacizacji[]{loader_map, tracking},sourceLocation);
+       }
 }

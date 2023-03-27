@@ -40,6 +40,7 @@ public class Nawigation extends Fragment {
     EditText room;
     Button search;
     Button go;
+
     public Nawigation() {
         // Required empty public constructor
     }
@@ -59,13 +60,19 @@ public class Nawigation extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.mapView=view.findViewById(R.id.map);
-        ((MainActivity)getHost()).screean_tracking=new screean_Tracking();
-       ((MainActivity)getHost()).mapa= new Mapa((Context) getHost(),mapView,((MainActivity)getHost()).screean_tracking);
-        ((MainActivity)getHost()).mapa.mapView.setId(R.id.map);
-       room=view.findViewById(R.id.editTextTextPersonName);
-        search=view.findViewById(R.id.search_around);
-        go=view.findViewById(R.id.go);
+
+        ((MainActivity) getHost()).screean_tracking = new screean_Tracking();
+        this.mapView = view.findViewById(R.id.map);
+        if (((MainActivity) getHost()).mapa == null) {
+            ((MainActivity) getHost()).mapa = new Mapa((Context) getHost(), mapView, ((MainActivity) getHost()).screean_tracking);
+        }
+        else
+        {
+            ((MainActivity) getHost()).mapa.newInstance(mapView,((MainActivity) getHost()).screean_tracking);
+        }
+        room = view.findViewById(R.id.editTextTextPersonName);
+        search = view.findViewById(R.id.search_around);
+        go = view.findViewById(R.id.go);
         go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,15 +92,13 @@ public class Nawigation extends Fragment {
     }
 
 
-
-
-    public void search_around(View view)  {
+    public void search_around(View view) {
         List<POI> POIs = null;
-        POIs= search_location.search_flickr(10,mapView.getBoundingBox(),false);
-        Comparator comparator= new Comparator() {
+        POIs = search_location.search_flickr(10, mapView.getBoundingBox(), false);
+        Comparator comparator = new Comparator() {
             @Override
             public int compare(Object o1, Object o2) {
-                return ((POI)o2).mRank-((POI)o1).mRank;
+                return ((POI) o2).mRank - ((POI) o1).mRank;
             }
 
             @Override
@@ -102,30 +107,48 @@ public class Nawigation extends Fragment {
             }
         };
         POIs.sort(comparator);
-        for(int i=0;i<POIs.size();i++)
-        {
-            Marker marker= new Marker(mapView);
+        for (int i = 0; i < POIs.size(); i++) {
+            Marker marker = new Marker(mapView);
             marker.setPosition(POIs.get(i).mLocation);
-            if(POIs.get(i).mThumbnailPath!=null) {
+            if (POIs.get(i).mThumbnailPath != null) {
                 marker.setIcon(new BitmapDrawable(POIs.get(i).getThumbnail()));
                 marker.setImage(new BitmapDrawable(POIs.get(i).getThumbnail()));
             }
             marker.setTitle(POIs.get(i).mType);
             marker.setSnippet(POIs.get(i).mDescription);
             marker.setRelatedObject(POIs.get(i));
-            marker.setInfoWindow(new ekran_marker(mapView,getContext()));
+            marker.setInfoWindow(new ekran_marker(mapView, getContext()));
             mapView.getOverlays().add(marker);
         }
 
     }
+
     public void trasowanie(View view) throws IOException {
         Fragment fragment = new search();
-        Bundle bundle =new Bundle();
-        bundle.putString("word",room.getText().toString());
-        bundle.putSerializable("mapa",((MainActivity)getHost()).mapa);
-        bundle.putSerializable("tracking",((MainActivity)getHost()).screean_tracking);
+        Bundle bundle = new Bundle();
+        bundle.putString("word", room.getText().toString());
+        bundle.putSerializable("mapa", ((MainActivity) getHost()).mapa);
+        bundle.putSerializable("tracking", ((MainActivity) getHost()).screean_tracking);
         fragment.setArguments(bundle);
-        ((MainActivity)getHost()).replace_fragment(fragment);
+        ((MainActivity) getHost()).replace_fragment(fragment);
+    }
+
+    @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        mapView.onPause();
+        super.onPause();
+    }
+    @Override
+    public void onDetach()
+    {
+        mapView.onDetach();
+        super.onDetach();
     }
 
 

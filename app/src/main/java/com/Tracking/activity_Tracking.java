@@ -20,11 +20,14 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Polyline;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class activity_Tracking implements Akcje_na_lokacizacji {
 
     public com.Tracking.trasy.trasa trasa;
+    public ArrayList<Address> addresses;
     public MapView mapView;
     protected Context kontekst;
     protected Tracking traking;
@@ -35,7 +38,7 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
     long time_last_actualization;
     private Text_convert_voice text_convert_voice;
     boolean voice;
-    private screean_Tracking screean_tracking;
+    public screean_Tracking screean_tracking;
     Dialog dialog_loader;
     boolean first_location;
     public activity_Tracking(MapView mapView, Context kontekst, trasa typtrasa, Tracking tracking, screean_Tracking screean_tracking)  {
@@ -50,6 +53,21 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
         this.screean_tracking=screean_tracking;
         creating_dialog_tracking();
         first_location=false;
+        addresses=new ArrayList<>();
+    }
+    public void newinstancjon(MapView mapView,screean_Tracking screean_tracking)
+    {
+        this.mapView=mapView;
+        this.screean_tracking=screean_tracking;
+        if(this.trasa!=null) {
+            trasa trasa = this.trasa;
+            this.trasa = null;
+            int count_list=addresses.size()-1;
+            for (int i = count_list; i >=0; i--) {
+                add_tracking(addresses.get(i));
+                addresses.remove(count_list);
+            }
+        }
     }
     private void  creating_dialog_tracking()
     {
@@ -57,6 +75,7 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
         dialog_loader.setTitle("loading");
         dialog_loader.setTitle("Ustalanie trasy");
     }
+
 
     public void setVoice(boolean voice)
     {
@@ -76,6 +95,7 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
         if(this.location!=null)
         {
 
+            this.addresses.add(location);
             if (trasa != null && trasa.is_trasa())
             {
                 remove_polyline(trasa.polyline);
@@ -133,6 +153,7 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
             trasa.removeTargets();
             trasa = null;
             traking.Remove_Tracking();
+            addresses=new ArrayList<Address>();
         }
 
         mapView.invalidate();
@@ -154,7 +175,7 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
     }
     void end_tracking(int index)
     {
-
+        addresses.remove(index);
         trasa.remove_tracking(index);
         mapView.getOverlays().removeAll(trasa.markers_instruction);
         trasa.remove_Markers();

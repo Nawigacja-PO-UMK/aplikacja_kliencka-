@@ -73,4 +73,22 @@ public class MainActivity extends AppCompatActivity{
         fragmentTransaction.replace(R.id.conteiner,fragment);
         fragmentTransaction.commit();
     }
+/*
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(mapView!=null) {
+            mapa.newInstance(mapView,screean_tracking);
+            mapView.onResume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(mapView!=null)
+            mapView.onPause();
+    }
+*/
 }
