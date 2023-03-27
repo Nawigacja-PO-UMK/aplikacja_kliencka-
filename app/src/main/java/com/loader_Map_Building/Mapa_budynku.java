@@ -1,7 +1,5 @@
 package com.loader_Map_Building;
 
-import static java.lang.Integer.parseInt;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Address;
@@ -29,7 +27,7 @@ import java.util.Locale;
 
 public class Mapa_budynku implements Serializable {
 
-    private MapView mapView;
+    private final MapView mapView;
     private IMapController mapController;
     Context kontekst;
     private int levelmax;

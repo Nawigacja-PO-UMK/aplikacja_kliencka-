@@ -15,8 +15,11 @@ public class Map_Overpass extends OverpassAPIProvider {
         s.append(mService + "?data=");
         String sBB = "(" + bb.getLatSouth() + "," + bb.getLonWest() + "," + bb.getLatNorth() + "," + bb.getLonEast() + ")";
         String data =
-                "[out:json][timeout:" + timeout + "];"
-                        + "(way[" + tag + "] [!highway]" + sBB + ";);"
+                "[out:json][timeout:" + timeout + "];" +
+                        "(way[amenity]" + sBB +
+                        ";way[" + tag + "] [!highway][room]" + sBB +
+                        ";way[" + tag + "] [!highway][indoor]" + sBB +
+                        ";way[" + tag + "] [highway=\"elevator\"]" + sBB +";);"
                         + "out qt geom tags " + limit + ";"; //relation isolated to get geometry with body option
         //TODO: see issue https://github.com/drolbr/Overpass-API/issues/134#issuecomment-58847362
         //When solved, simplify.

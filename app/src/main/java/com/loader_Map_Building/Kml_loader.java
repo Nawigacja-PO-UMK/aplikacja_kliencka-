@@ -46,7 +46,7 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
 
         Thread[] threads=new Thread[maxlevel-minlevel+1];
         for (int i=minlevel,j=0;i<=maxlevel;i++,j++) {
-            threads[j] = new Thread(new wczytywanie_mapy(kmlDocument,folderOverlays,j, i,mapView));
+            threads[j] = new Thread(new wczytywanie_mapy(kmlDocument,folderOverlays,j, i,mapView,context));
             threads[j].start();
         }
         try {

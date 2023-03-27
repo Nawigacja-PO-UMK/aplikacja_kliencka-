@@ -115,7 +115,7 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi {
     private void zmian_pozycji_wskaźnika(współrzedne dane)
     {
         if (dane !=null) {
-            znacznik.przesunięcię_wskaznika(new GeoPoint(dane.X,dane.Y));
+            znacznik.przesuniecie_wskaznika(new GeoPoint(dane.X,dane.Y));
             Toast.makeText(kontekst, "X:"+dane.X +" Y:"+dane.Y+" Z:"+dane.Z, Toast.LENGTH_SHORT).show();
         }
         else

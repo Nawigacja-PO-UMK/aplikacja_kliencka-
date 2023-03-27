@@ -31,7 +31,7 @@ public class Znacznik_Pozycji extends Marker {
         setTitle("X="+pozycja.getLatitude()+" Y="+pozycja.getLongitude()+" Z="+level);
     }
 
-    public void przesunięcię_wskaznika( GeoPoint point)
+    public void przesuniecie_wskaznika(GeoPoint point)
     {
         setPosition(point);
         mapView.invalidate();
