@@ -41,7 +41,7 @@ public class wczytywanie_mapy implements Runnable {
             folderOverlays[index] = (FolderOverlay) kmlDocuments[index].mKmlRoot.buildOverlay(mapView, null, null,kmlDocuments[index]);
 
             Map_Overpass map_overpass = new Map_Overpass();
-            String tag = "level=" + level;
+            String tag = "" + level;
             BoundingBox boxA = new BoundingBox(53.01784, 18.60415, 53.01693, 18.60197);
             String url = map_overpass.urlForTagSearchKml(tag, boxA,10000,1000);
             ///Dodawanie obiektów z JSON do kmlDocument i tworzenie warstwy piętra
@@ -57,8 +57,6 @@ public class wczytywanie_mapy implements Runnable {
                 folderOverlays[index].add(overlay);
             }
             //////
-
-
 
             folderOverlays[index].setName("Floor"+level);
         }

@@ -65,7 +65,8 @@ public class Stylistyka {
 
             String nazwa = feature.getExtendedData("room");
             String name = feature.getExtendedData("name");
-
+            String h = feature.getExtendedData("highway");
+            if(h != null && h.equals("steps"))nazwa=feature.getExtendedData("highway");
 
             if(nazwa == null) {
                 nazwa = feature.getExtendedData("indoor");
@@ -95,7 +96,7 @@ public class Stylistyka {
 
             if (name == null) name = nazwa;
 
-            Objects.requireNonNull(pomieszczenie_hashtable.get(nazwa)).Dodaj_pomieszczenie(feature);
+            if(!nazwa.matches("steps")) Objects.requireNonNull(pomieszczenie_hashtable.get(nazwa)).Dodaj_pomieszczenie(feature);
 
             if(!nazwa.matches("room|toilet|toilets|storage|elevator|"))
             {
