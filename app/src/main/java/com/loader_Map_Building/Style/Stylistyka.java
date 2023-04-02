@@ -172,7 +172,7 @@ public class Stylistyka {
                     case "staircase":
                     case "steps": {
                         color = Color.rgb(255, 201, 14);
-                        drawable = ResourcesCompat.getDrawable(res,R.drawable.stairs,null);
+                        drawable = ResourcesCompat.getDrawable(res,R.drawable.steps,null);
                         break;
                     }
                     case "corridor": {
