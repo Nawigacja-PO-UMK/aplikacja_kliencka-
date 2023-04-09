@@ -48,7 +48,7 @@ public class trackingActivity extends Fragment {
             mapa.getMapa_budynku().remove_tracking();
         else
             mapa.remove_tracking();
-        ((MainActivity)getHost()).replace_fragment(new Fragment());
+        ((MainActivity)getHost()).replace_fragment(new Fragment(),R.id.conteiner);
     }
 
 

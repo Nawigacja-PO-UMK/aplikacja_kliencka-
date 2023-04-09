@@ -83,8 +83,13 @@ public search() {
                 }
             });
         }
-        else
-            Toast.makeText(((MainActivity)getHost()), "nie znaleziono", Toast.LENGTH_SHORT).show();
+        else {
+            if(mapa.tracking.getTrasa()==null)
+                ((MainActivity)getHost()).replace_fragment(new Fragment(),R.id.conteiner);
+            else
+                tracking_Activity(getContext(),mapa,screean_tracking);
+            Toast.makeText(((MainActivity) getHost()), "nie znaleziono", Toast.LENGTH_SHORT).show();
+        }
     }
 
     static public void tracking_Activity(Context kontext ,Mapa mapa,screean_Tracking screean_tracking)
@@ -94,7 +99,7 @@ public search() {
         bundle.putSerializable("mapa", mapa);
         bundle.putSerializable("screan",screean_tracking);
         fragmentTracking.setArguments(bundle);
-        ((MainActivity)kontext).replace_fragment(fragmentTracking);
+        ((MainActivity)kontext).replace_fragment(fragmentTracking,R.id.conteiner);
     }
 
 }

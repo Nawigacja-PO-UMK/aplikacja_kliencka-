@@ -68,8 +68,10 @@ public class GeoNamesPOIProvider {
      * @return the list of POI
      */
     public ArrayList<POI> getThem(String fullUrl){
-        String jString =  BonusPackHelper.requestStringFromUrl(fullUrl);
         try{
+            String jString =  BonusPackHelper.requestStringFromUrl(fullUrl);
+            if(jString==null)
+                jString="";
             JSONObject jRoot = new JSONObject(jString);
             JSONArray jPlaceIds = jRoot.getJSONArray("geonames");
             int n = jPlaceIds.length();

@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.Tracking.DowlandTracking.Building_Tracking;
+import com.Tracking.DowlandTracking.OSRM_Tracking;
 import com.Tracking.activity_Tracking;
 import com.Tracking.trasy.trasa;
 import com.Tracking.trasy.trasa_building;
@@ -18,6 +19,7 @@ import com.search_location.search_location;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
@@ -36,17 +38,18 @@ public class Mapa_budynku implements Serializable {
     private Tracking traking;
     private Kml_loader loadKml;
     private ArrayList<Marker>[] markers;
-    private activity_Tracking tracking_buliding;
+    public activity_Tracking tracking_buliding;
+    BoundingBox box;
 
-    public Mapa_budynku(Context kontekst, MapView mapView, screean_Tracking screean_tracking) {
+    public Mapa_budynku(Context kontekst, BoundingBox box,MapView mapView, screean_Tracking screean_tracking) {
         this.kontekst = kontekst;
         this.mapView = mapView;
-        mapView.setTileSource(TileSourceFactory.MAPNIK);
         levelmax=2;
         levelmin=-1;
         level=0;
+        this.box=box;
         this.tracking_buliding=new activity_Tracking(mapView,kontekst,new trasa_building(),
-                new Building_Tracking(kontekst,0),screean_tracking);
+                new OSRM_Tracking(kontekst,0),screean_tracking);
     }
     public trasa get_trasa()
     {
@@ -84,15 +87,14 @@ public class Mapa_budynku implements Serializable {
             if (loadKml != null)
                 loadKml.show_map(level);
             else
-                loadKml = (Kml_loader) new Kml_loader(kontekst, mapView, level, levelmin, levelmax).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                loadKml = (Kml_loader) new Kml_loader(kontekst,box, mapView, level, levelmin, levelmax).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
-
     }
     @SuppressLint("SuspiciousIndentation")
     public void wczytaj_nowa_mape(int level)
     {
         if(level!=this.level) {
-            mapView.getOverlays().clear();
+            mapView.getOverlays().remove(loadKml.folderOverlays[this.level-levelmin]);
             trasa_building trasa = (trasa_building) tracking_buliding.getTrasa();
             //mapView.getOverlays().add(trasa.polyline(level));
             wczytywanie_mapy(level);

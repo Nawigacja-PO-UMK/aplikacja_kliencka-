@@ -1,6 +1,8 @@
 package com.search_location;
 
+import android.annotation.SuppressLint;
 import android.location.Address;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.osmdroid.bonuspack.kml.KmlFeature;
@@ -19,15 +21,25 @@ public class search_location {
 static private final String key_api_flickr="062a0eb83c271c0de95439b5ccfd1601";
 
 
+static public GeoPoint my_car;
     static public List<Address> search(String nazwa, int max_Rezultat) {
-            com.search_location.GeocoderNominatim searche = new com.search_location.GeocoderNominatim(new Locale("Polish (pl)", "Poland (PL)"), "MateuszBloch_aplikacj");
-
+        List<Address> addresses= new ArrayList<>();
+        com.search_location.GeocoderNominatim searche = new com.search_location.GeocoderNominatim(new Locale("Polish (pl)", "Poland (PL)"), "MateuszBloch_aplikacj");
                 try {
-                    return searche.getFromLocationName(nazwa, max_Rezultat);
+                    addresses=  searche.getFromLocationName(nazwa, max_Rezultat);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-        return new ArrayList<>();
+                if(nazwa.equals("auto")&& my_car!=null)
+                {
+                 Address tmpAdress=   new Address(new Locale("Polish (pl)", "Poland (PL)"));
+                 tmpAdress.setLatitude(my_car.getLatitude());
+                 tmpAdress.setLongitude(my_car.getLongitude());
+                 tmpAdress.setFeatureName("zaparkowane Auto");
+                 addresses.add(0,tmpAdress);
+                }
+
+        return addresses;
 
     }
     static public List<POI> search(int max_Rezultat,GeoPoint point,double distans)
@@ -50,7 +62,8 @@ static private final String key_api_flickr="062a0eb83c271c0de95439b5ccfd1601";
     }
 
 
-    static public  List<POI> search_flickr(int max_Rezultat, BoundingBox boundingBox,boolean bigsize)
+    @SuppressLint("SuspiciousIndentation")
+    static public  List<POI> search_flickr(int max_Rezultat, BoundingBox boundingBox, boolean bigsize)
     {
         com.search_location.FlickrPOIProvider poiProvider = new FlickrPOIProvider(key_api_flickr);
         if(bigsize)
@@ -69,7 +82,11 @@ static private final String key_api_flickr="062a0eb83c271c0de95439b5ccfd1601";
     static public String search_name_Adress(Address address)
     {
         if(address.getFeatureName()== null) {
+            if(address.getExtras().getString("display_name").split(",")[0].equals(address.getSubThoroughfare()))
+                return address.getLocality()+" "+address.getSubThoroughfare();
+            else
             return address.getExtras().getString("display_name").split(",")[0];
+
         }else
             return address.getFeatureName();
     }

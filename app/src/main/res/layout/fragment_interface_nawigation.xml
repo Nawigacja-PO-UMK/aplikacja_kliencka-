@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Nawigation_Fragment.Nawigation.interface_nawigation">
+    <RelativeLayout android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+    <Button
+        android:id="@+id/go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="38dp"
+        android:text="@string/go"
+        tools:ignore="RelativeOverlap"
+        tools:layout_editor_absoluteX="230dp"
+        tools:layout_editor_absoluteY="100dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="30dp"
+        android:id="@+id/search_around"
+        android:text="search \n around" />
+
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="230dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="70dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Gdzię chcesz iść ?" />
+    </RelativeLayout>
+
+</FrameLayout>

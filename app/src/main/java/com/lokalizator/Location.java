@@ -14,17 +14,23 @@ public class Location  {
     private MyLocationNewOverlay myLocationNewOverlay;
     private GeoPoint last_kow_location;
     private IMapController mapController;
-    private boolean seting_center;
+    public boolean seting_center;
     public android.location.Location Location;
     private uniwersal_location LocationSource;
-    public Location(Context kontekst, MapView mapView, Akcje_na_lokacizacji[] Akcje,uniwersal_location locationSource)
+    public Location(Context kontekst, MapView mapView, Akcje_na_lokacizacji[] Akcje,uniwersal_location locationSource,GeoPoint new_kow_location)
     {
         this.kontekst=kontekst;
         this.mapView=mapView;
         this.seting_center=false;
         mapController = mapView.getController();
-        mapController.setZoom(10);
-        last_kow_location=new GeoPoint(53.017270, 18.60300);
+        if(new_kow_location!=null) {
+            mapController.setZoom(19);
+            this.last_kow_location = new_kow_location;
+        }
+            else {
+            mapController.setZoom(10);
+            this.last_kow_location = new GeoPoint(53.017270, 18.60300);
+        }
         mapController.setCenter(last_kow_location);
         this.LocationSource=locationSource;
         this.myLocationNewOverlay = new MyLocationNewOverlay(this.LocationSource,mapView) {

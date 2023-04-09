@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Nawigation_Fragment.save">
+    tools:context=".Nawigation_Fragment.ulunione.save">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="zapis" />
-
+        android:id="@+id/conteiner_save"
+        ></androidx.fragment.app.FragmentContainerView>
 </FrameLayout>

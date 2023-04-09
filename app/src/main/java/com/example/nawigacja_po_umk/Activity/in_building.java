@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nawigacja_po_umk.Mapa;
 import com.example.nawigacja_po_umk.R;
@@ -19,8 +21,6 @@ public class in_building extends Fragment {
 
     Mapa_budynku mapa;
     public in_building() {
-
-
     }
 
     @Override
@@ -39,11 +39,16 @@ public class in_building extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Button up=view.findViewById(R.id.up);
         Button down=view.findViewById(R.id.down);
+        TextView level= view.findViewById(R.id.textlevel);
+        level.setTextSize(25);
+        level.setText(String.valueOf(mapa.level()));
+
         up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mapa!=null && mapa.levelmax()>mapa.level()) {
                     mapa.wczytaj_nowa_mape(mapa.level() + 1);
+                    level.setText(String.valueOf(mapa.level()));
                 }
             }
         });
@@ -53,6 +58,7 @@ public class in_building extends Fragment {
             public void onClick(View v) {
                 if(mapa!=null && mapa.Levelmin()<mapa.level()) {
                     mapa.wczytaj_nowa_mape(mapa.level() - 1);
+                    level.setText(String.valueOf(mapa.level()));
                 }
             }
         });

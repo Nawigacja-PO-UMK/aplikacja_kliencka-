@@ -1,8 +1,9 @@
 package com.search_location;
 
+import java.io.Serializable;
 import java.util.Locale;
 
-public class Address extends android.location.Address {
+public class Address extends android.location.Address implements Serializable {
     /**
      * Constructs a new Address object set to the given Locale and with all
      * other fields initialized to null or false.

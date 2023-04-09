@@ -1,14 +1,18 @@
 package com.example.nawigacja_po_umk;
 
+import static com.example.nawigacja_po_umk.MainActivity.file_save;
 import static java.lang.Integer.parseInt;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.os.Bundle;
 
 import com.Tracking.DowlandTracking.OSRM_Tracking;
 import com.Tracking.activity_Tracking;
 import com.Tracking.trasy.trasa_outside;
+import com.example.nawigacja_po_umk.Activity.search;
 import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
 import com.loader_Map_Building.Mapa_budynku;
 import com.lokalizator.Akcje_na_lokacizacji;
@@ -19,6 +23,7 @@ import com.search_location.search_location;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
@@ -36,19 +41,21 @@ public class Mapa implements Serializable , MapEventsReceiver {
     public IMapController mapController;
     Context kontekst;
     MapEventsOverlay mapEventsOverlay;
-    private Location location;
+    public Location location;
     private Mapa_budynku mapa_budynku;
     private Loader_map loader_map;
     public activity_Tracking tracking;
     public Marker marker;
-    uniwersal_location  sourceLocation;
+    public static ITileSource tileSource=TileSource_Mapbox();
+    public  uniwersal_location  sourceLocation;
+
 
     public Mapa(Context kontekst, MapView mapView, screean_Tracking screean_tracking)
     {
         this.kontekst = kontekst;
         this.mapView = mapView;
-        //mapView.setTileSource(TileSourceFactory.MAPNIK);
-        setTileSource_Mapbox();
+
+        mapView.setTileSource(tileSource);
         mapController = mapView.getController();
         mapController.setZoom(15);
         mapView.setMultiTouchControls(true);
@@ -62,17 +69,35 @@ public class Mapa implements Serializable , MapEventsReceiver {
         this.loader_map= new Loader_map(new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197),
                mapView,kontekst,sourceLocation,screean_tracking);
         tracking=new activity_Tracking(mapView,kontekst,new trasa_outside(), new OSRM_Tracking(kontekst,0),screean_tracking);
-       location=new Location(kontekst,mapView, new Akcje_na_lokacizacji[]{loader_map, tracking},sourceLocation);
+       location=new Location(kontekst,mapView, new Akcje_na_lokacizacji[]{loader_map, tracking},sourceLocation,null);
     }
 
-    private void setTileSource_Mapbox() {
-        final ITileSource tileSource = new XYTileSource( "3d", 1, 20, 512, ".png?key=ttyaQAsQurB5RH7Nlny1",
+    public Mapa(Context kontekst, MapView mapView)
+    {
+        this.kontekst = kontekst;
+        this.mapView = mapView;
+        mapView.setTileSource(tileSource);
+        mapController = mapView.getController();
+        mapController.setZoom(15);
+        mapView.setMultiTouchControls(true);
+        RotationGestureOverlay mRotationGestureOverlay = new RotationGestureOverlay(kontekst, mapView);
+        mRotationGestureOverlay.setEnabled(true);
+        mapView.setMultiTouchControls(true);
+        mapView.getOverlays().add(mRotationGestureOverlay);
+        mapEventsOverlay = new MapEventsOverlay(kontekst, this);
+        mapView.getOverlays().add(0, mapEventsOverlay);
+    }
+
+    public static ITileSource TileSource_Mapbox() {
+         return new XYTileSource( "3d", 1, 20, 512, ".png?key=ttyaQAsQurB5RH7Nlny1",
                 new String[] {
                         "https://api.maptiler.com/maps/streets-v2/" },"© MapTiler © współtwórcy OpenStreetMap");
-        mapView.setTileSource(tileSource);
-
     }
 
+    public void setTileSource(ITileSource tileSource) {
+        Mapa.tileSource = tileSource;
+        mapView.setTileSource(tileSource);
+    }
 
     public activity_Tracking getTracking() {
         return tracking;
@@ -109,11 +134,10 @@ public class Mapa implements Serializable , MapEventsReceiver {
             marker = null;
         return true;
     }
-       public void   newInstance(MapView mapView,screean_Tracking screean_tracking) {
+       @SuppressLint("SuspiciousIndentation")
+       public void   newInstance(MapView mapView, screean_Tracking screean_tracking) {
         this.mapView=mapView;
-        setTileSource_Mapbox();
-           mapController = mapView.getController();
-           mapController.setZoom(15);
+        mapView.setTileSource(tileSource);
            mapView.setMultiTouchControls(true);
            RotationGestureOverlay mRotationGestureOverlay = new RotationGestureOverlay(kontekst, mapView);
            mRotationGestureOverlay.setEnabled(true);
@@ -125,6 +149,8 @@ public class Mapa implements Serializable , MapEventsReceiver {
            this.loader_map= new Loader_map(new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197),
                    mapView,kontekst,sourceLocation,screean_tracking);
            tracking.newinstancjon(mapView,screean_tracking);
-          location=new Location(kontekst,mapView, new Akcje_na_lokacizacji[]{loader_map, tracking},sourceLocation);
-       }
+          location=new Location(kontekst,mapView, new Akcje_na_lokacizacji[]{loader_map, tracking},sourceLocation,this.location.getMyLocation());
+          if(tracking.trasa!=null)
+          search.tracking_Activity(kontekst,this,screean_tracking);
+    }
 }

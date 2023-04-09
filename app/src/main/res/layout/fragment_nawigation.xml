@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Nawigation_Fragment.Nawigation">
+    tools:context=".Nawigation_Fragment.Nawigation.Nawigation">
 
         <RelativeLayout
             android:id="@+id/parent_container"
@@ -30,39 +30,13 @@
                 tools:layout="@layout/banck">
 
             </androidx.fragment.app.FragmentContainerView>
-            <Button
-                android:id="@+id/go"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="38dp"
-                android:text="@string/go"
-                tools:ignore="RelativeOverlap"
-                tools:layout_editor_absoluteX="230dp"
-                tools:layout_editor_absoluteY="100dp" />
+            <androidx.fragment.app.FragmentContainerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/inferface_nawigation"
+                tools:layout="@layout/fragment_interface_nawigation">
+            </androidx.fragment.app.FragmentContainerView>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="60dp"
-                android:layout_marginEnd="30dp"
-                android:id="@+id/search_around"
-                android:text="search \n around" />
-
-
-            <EditText
-                android:id="@+id/editTextTextPersonName"
-                android:layout_width="230dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="70dp"
-                android:layout_marginStart="35dp"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Gdzię chcesz iść ?" />
 
         </RelativeLayout>
 

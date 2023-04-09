@@ -45,13 +45,16 @@ public class Loader_map implements Akcje_na_lokacizacji {
     public void Akcja(Location location)
     {
            if (mapa_budynku == null) {
-               mapa_budynku = new Mapa_budynku(kontekst, mapView,screean_tracking);
+               mapa_budynku = new Mapa_budynku(kontekst, box,mapView,screean_tracking);
                mapa_budynku.wczytywanie_mapy(0);
                Bundle bundle=new Bundle();
                bundle.putSerializable("mapa",mapa_budynku);
                in_door.setArguments(bundle);
-               ((MainActivity)kontekst).replace_fragment(in_door);
+               ((MainActivity)kontekst).replace_fragment(in_door,R.id.conteiner);
            }
+           else
+           if(mapa_budynku.tracking_buliding.warunek(location))
+               mapa_budynku.tracking_buliding.Akcja(location);
 /*
            if(this.location.isLocation_builging())
             {

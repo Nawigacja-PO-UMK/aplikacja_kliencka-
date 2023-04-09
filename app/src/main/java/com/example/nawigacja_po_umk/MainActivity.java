@@ -3,42 +3,35 @@ package com.example.nawigacja_po_umk;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
+import androidx.navigation.NavigatorProvider;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.nawigacja_po_umk.Activity.search;
-import com.example.nawigacja_po_umk.Activity.trackingActivity;
-import com.example.nawigacja_po_umk.Mapa;
-import com.example.nawigacja_po_umk.Nawigation_Fragment.Nawigation;
-import com.example.nawigacja_po_umk.R;
-import com.example.nawigacja_po_umk.ekranMarker.ekran_marker;
+import com.example.nawigacja_po_umk.Nawigation_Fragment.Nawigation.Nawigation;
 import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
 import com.google.android.material.navigation.NavigationView;
-import com.search_location.search_location;
 
-import org.osmdroid.bonuspack.location.POI;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.Marker;
-
-import java.io.IOException;
-import java.util.Comparator;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -48,8 +41,17 @@ public class MainActivity extends AppCompatActivity{
     MapView mapView;
     FragmentManager fragmentManager;
     public screean_Tracking screean_tracking;
+    NavController navController;
+    NavigationView navigationView;
+    static public SharedPreferences plik;
+    final static public String file_save = "save_like";
+    public static SharedPreferences.Editor prefsEditor;
+    NavigationUI navigationUI;
+
     @SuppressLint({"MissingInflatedId", "ResourceType"})
     @Override protected void onCreate(Bundle savedInstanceState) {
+        plik =this.getSharedPreferences(file_save, Context.MODE_PRIVATE);
+         prefsEditor= plik.edit();
         super.onCreate(savedInstanceState);
         fragmentManager=getSupportFragmentManager();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -60,35 +62,35 @@ public class MainActivity extends AppCompatActivity{
         context = this;
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PackageManager.PERMISSION_GRANTED);
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
-
-        NavigationView navigationView= findViewById(R.id.navigation_bar_item_icon_view);
+         navigationView= findViewById(R.id.navigation_bar_item_icon_view);
         navigationView.setItemIconTintList(null);
-        NavController navController= Navigation.findNavController(this,R.id.my_nav_host_fragment);
+        navController= Navigation.findNavController(this,R.id.my_nav_host_fragment);
         NavigationUI.setupWithNavController(navigationView,navController);
     }
 
-     public void replace_fragment(Fragment fragment)
+     public void replace_fragment(Fragment fragment, int index_contenr)
     {
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.conteiner,fragment);
+        fragmentTransaction.replace(index_contenr,fragment);
         fragmentTransaction.commit();
     }
-/*
+
     @Override
     public void onResume() {
-        super.onResume();
-
         if(mapView!=null) {
-            mapa.newInstance(mapView,screean_tracking);
             mapView.onResume();
         }
+        super.onResume();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
-        if(mapView!=null)
+        if(mapView!=null) {
             mapView.onPause();
+        }
+            super.onPause();
     }
-*/
+
+
+
 }

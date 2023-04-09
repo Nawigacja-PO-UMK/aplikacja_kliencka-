@@ -19,8 +19,9 @@ public class wczytywanie_mapy implements Runnable {
         private final MapView mapView;
         private Context context;
         private Stylistyka stylistyka;
+        private BoundingBox box;
 
-        public wczytywanie_mapy(KmlDocument[] kmlDocuments,FolderOverlay[] folderOverlays,int index, int level, MapView mapView, Context context)
+        public wczytywanie_mapy(BoundingBox box,KmlDocument[] kmlDocuments,FolderOverlay[] folderOverlays,int index, int level, MapView mapView, Context context)
         {
             this.level=level;
             this.index=index;
@@ -28,6 +29,7 @@ public class wczytywanie_mapy implements Runnable {
             this.folderOverlays=folderOverlays;
             this.mapView=mapView;
             this.context=context;
+            this.box=box;
         }
         @Override
         public void run() {
@@ -42,8 +44,8 @@ public class wczytywanie_mapy implements Runnable {
 
             Map_Overpass map_overpass = new Map_Overpass();
             String tag = "level=" + level;
-            BoundingBox boxA = new BoundingBox(53.01784, 18.60415, 53.01693, 18.60197);
-            String url = map_overpass.urlForTagSearchKml(tag, boxA,10000,1000);
+            //BoundingBox boxA = new BoundingBox(53.01784, 18.60415, 53.01693, 18.60197);
+            String url = map_overpass.urlForTagSearchKml(tag, box,10000,1000);
             ///Dodawanie obiektów z JSON do kmlDocument i tworzenie warstwy piętra
             while(!map_overpass.addInKmlFolder(kmlDocuments[index].mKmlRoot,url));
 

@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.search">
+    tools:context=".Nawigation_Fragment.Map_Building.Map_buliding">
 
-    <ListView
-        android:id="@+id/list_item"
+    <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
-        android:layout_height="609dp"
-        android:layout_marginTop="110dp"
-        android:background="@color/white"
-        android:cacheColorHint="#FAF7F7" />
+        android:layout_height="match_parent"
+        android:id="@+id/conteinter_Map_building"
+        >
+
+    </androidx.fragment.app.FragmentContainerView>
+
 </FrameLayout>

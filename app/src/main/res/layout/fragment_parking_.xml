@@ -3,12 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Nawigation_Fragment.Parking_Fragment">
+    <RelativeLayout
+        android:id="@+id/parent_container"
+        android:layout_width="411dp"
+        android:layout_height="725dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="1dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="parking" />
+        <org.osmdroid.views.MapView
+            android:id="@+id/map_parking"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            tools:ignore="NotSibling" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="680dp"
+            android:layout_marginStart="0dp"
+            android:text="zaparkuj"
+            android:id="@+id/zaprkuj"
+            ></Button>
+    </RelativeLayout>
 </FrameLayout>

@@ -5,10 +5,47 @@
     android:layout_height="match_parent"
     tools:context=".Nawigation_Fragment.mapy_fragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="mapy" />
+        android:layout_height="wrap_content"
+        android:text="Dostępne Kafelki"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/car_ui_body2_size"
+        ></TextView>
+    <ImageView
+        android:id="@+id/map1"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:scaleType="centerCrop"
+        ></ImageView>
+    <ImageView
+        android:id="@+id/map2"
+        android:layout_marginTop="550dp"
+        android:layout_marginStart="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:scaleType="centerCrop"
+        ></ImageView>
+
+    <ImageView
+        android:id="@+id/map3"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginStart="0dp"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="400dp"></ImageView>
+
+    <ImageView
+        android:id="@+id/map4"
+        android:layout_marginTop="250dp"
+        android:layout_marginStart="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:scaleType="centerCrop"
+        ></ImageView>
 
 </FrameLayout>

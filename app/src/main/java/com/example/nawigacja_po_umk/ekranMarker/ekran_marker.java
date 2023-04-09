@@ -27,6 +27,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.nawigacja_po_umk.Activity.search;
 import com.example.nawigacja_po_umk.MainActivity;
+import com.example.nawigacja_po_umk.Nawigation_Fragment.ulunione.list_ulubione;
+import com.example.nawigacja_po_umk.Nawigation_Fragment.ulunione.save;
 import com.example.nawigacja_po_umk.R;
 import com.search_location.Address;
 import com.search_location.search_location;
@@ -54,6 +56,7 @@ public class ekran_marker extends  MarkerInfoWindow {
     Context kontext;
     ImageView imageView;
     Marker marker;
+    Button ulubione;
     FragmentManager fragmentManager;
     DialogFragment dialogFragment;
 
@@ -70,6 +73,7 @@ public class ekran_marker extends  MarkerInfoWindow {
         this.facebook=(TextView)mView.findViewById(R.id.facebook);
         this.open=(TextView)mView.findViewById(R.id.open);
         this.trasing=(Button) mView.findViewById(R.id.trasing);
+        this.ulubione=(Button) mView.findViewById(R.id.ulubione);
         this.fragmentManager=((AppCompatActivity)getActivity(kontext)).getSupportFragmentManager();
         mView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -85,7 +89,13 @@ public class ekran_marker extends  MarkerInfoWindow {
                 search.tracking_Activity(kontext,((MainActivity)kontext).mapa,((MainActivity)kontext).screean_tracking);
             }
         });
-
+        ulubione.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                list_ulubione.add_save_like(address,kontext);
+                Toast.makeText(kontext, "zapisono do ulubionych", Toast.LENGTH_SHORT).show();
+            }
+        });
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

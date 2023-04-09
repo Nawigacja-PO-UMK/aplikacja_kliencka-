@@ -18,14 +18,15 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
     KmlDocument[] kmlDocument;
     private Context context;
     private MapView mapView;
-    private FolderOverlay[] folderOverlays;
+    public FolderOverlay[] folderOverlays;
     int floor_level;
     int minlevel;
     int maxlevel;
+    BoundingBox box;
 
-
-    Kml_loader(Context context, MapView mapView,int floor_level,int minlevel,int maxlevel )
+    Kml_loader(Context context,BoundingBox box, MapView mapView,int floor_level,int minlevel,int maxlevel )
     {
+        this.box=box;
         this.progressDialog = new ProgressDialog(context);
         this.context=context;
         this.mapView=mapView;
@@ -46,7 +47,7 @@ public class Kml_loader extends AsyncTask<Void, Void, Void> {
 
         Thread[] threads=new Thread[maxlevel-minlevel+1];
         for (int i=minlevel,j=0;i<=maxlevel;i++,j++) {
-            threads[j] = new Thread(new wczytywanie_mapy(kmlDocument,folderOverlays,j, i,mapView,context));
+            threads[j] = new Thread(new wczytywanie_mapy(box,kmlDocument,folderOverlays,j, i,mapView,context));
             threads[j].start();
         }
         try {

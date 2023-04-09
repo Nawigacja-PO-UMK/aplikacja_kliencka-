@@ -28,4 +28,14 @@
         android:text="@string/down"
         android:id="@+id/down"/>
 
+    <TextView
+        android:id="@+id/textlevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="130dp"
+        android:layout_marginStart="70dp"
+        android:textAlignment="center"
+        android:background="@color/white"
+        android:text="TextView" />
+
 </FrameLayout>
