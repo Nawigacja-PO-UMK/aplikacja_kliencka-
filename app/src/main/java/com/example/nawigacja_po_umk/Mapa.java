@@ -1,13 +1,10 @@
 package com.example.nawigacja_po_umk;
 
-import static com.example.nawigacja_po_umk.MainActivity.file_save;
-import static java.lang.Integer.parseInt;
+
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.Address;
-import android.os.Bundle;
 
 import com.Tracking.DowlandTracking.OSRM_Tracking;
 import com.Tracking.activity_Tracking;

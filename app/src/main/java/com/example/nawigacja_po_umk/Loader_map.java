@@ -4,7 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 
 import com.example.nawigacja_po_umk.Activity.in_building;
 import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;

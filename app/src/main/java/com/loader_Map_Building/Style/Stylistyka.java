@@ -65,8 +65,7 @@ public class Stylistyka {
 
             String nazwa = feature.getExtendedData("room");
             String name = feature.getExtendedData("name");
-            String h = feature.getExtendedData("highway");
-            if(h != null && h.equals("steps"))nazwa=feature.getExtendedData("highway");
+
 
             if(nazwa == null) {
                 nazwa = feature.getExtendedData("indoor");
@@ -96,12 +95,12 @@ public class Stylistyka {
 
             if (name == null) name = nazwa;
 
-            if(!nazwa.matches("steps")) Objects.requireNonNull(pomieszczenie_hashtable.get(nazwa)).Dodaj_pomieszczenie(feature);
+            Objects.requireNonNull(pomieszczenie_hashtable.get(nazwa)).Dodaj_pomieszczenie(feature);
 
-            if(!nazwa.matches("room|toilet|toilets|storage|elevator"))
+            if(!nazwa.matches("room|toilet|toilets|storage|elevator|"))
             {
                 Objects.requireNonNull(etykieta_hashtable.get(nazwa)).addMarker(mapView,punkt);
-                if(!nazwa.matches("steps"))Objects.requireNonNull(etykieta_hashtable.get(nazwa)).addMarker(punkt,name, 80);
+                Objects.requireNonNull(etykieta_hashtable.get(nazwa)).addMarker(punkt,name, 80);
             }
             else Objects.requireNonNull(etykieta_hashtable.get(nazwa)).addMarker(punkt,name,0);
         }
@@ -172,7 +171,7 @@ public class Stylistyka {
                     case "staircase":
                     case "steps": {
                         color = Color.rgb(255, 201, 14);
-                        drawable = ResourcesCompat.getDrawable(res,R.drawable.steps,null);
+                        drawable = ResourcesCompat.getDrawable(res,R.drawable.stairs,null);
                         break;
                     }
                     case "corridor": {
