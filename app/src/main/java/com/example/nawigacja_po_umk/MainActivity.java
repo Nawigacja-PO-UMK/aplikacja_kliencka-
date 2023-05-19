@@ -9,15 +9,24 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
-
+import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
+import androidx.navigation.NavigatorProvider;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.example.nawigacja_po_umk.Nawigation_Fragment.Nawigation.Nawigation;
 import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
 import com.google.android.material.navigation.NavigationView;
 

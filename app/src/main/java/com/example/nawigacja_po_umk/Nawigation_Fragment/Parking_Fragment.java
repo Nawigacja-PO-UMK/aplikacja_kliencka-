@@ -24,7 +24,6 @@ public class Parking_Fragment extends Fragment {
 
 
     public Parking_Fragment() {
-        // Required empty public constructor
     }
 
 

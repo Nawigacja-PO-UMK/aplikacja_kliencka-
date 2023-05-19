@@ -12,6 +12,7 @@ import com.Tracking.DowlandTracking.OSRM_Tracking;
 import com.Tracking.activity_Tracking;
 import com.Tracking.trasy.trasa;
 import com.Tracking.trasy.trasa_building;
+import com.Tracking.trasy.trasa_outside;
 import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
 import com.search_location.Item;
 import com.Tracking.DowlandTracking.Tracking;
@@ -30,14 +31,12 @@ import java.util.Locale;
 public class Mapa_budynku implements Serializable {
 
     private final MapView mapView;
-    private IMapController mapController;
     Context kontekst;
     private int levelmax;
     private int levelmin;
-    private int level;
-    private Tracking traking;
+    public static int level;
     private Kml_loader loadKml;
-    private ArrayList<Marker>[] markers;
+    private trasa_building trasa_building;
     public activity_Tracking tracking_buliding;
     BoundingBox box;
 
@@ -48,8 +47,9 @@ public class Mapa_budynku implements Serializable {
         levelmin=-1;
         level=0;
         this.box=box;
-        this.tracking_buliding=new activity_Tracking(mapView,kontekst,new trasa_building(),
-                new OSRM_Tracking(kontekst,0),screean_tracking);
+        this.trasa_building=new trasa_building(level);
+        this.tracking_buliding=new activity_Tracking(mapView,kontekst,trasa_building,
+                new Building_Tracking(kontekst),screean_tracking);
     }
     public trasa get_trasa()
     {
@@ -63,7 +63,7 @@ public class Mapa_budynku implements Serializable {
     public int get_level_trasa()
     {
         if(null!=tracking_buliding.getTrasa())
-            return ((trasa_building) tracking_buliding.getTrasa()).level();
+            return (int)((trasa_building) tracking_buliding.getTrasa()).level();
         else
             return Integer.MAX_VALUE;
     }
@@ -95,8 +95,19 @@ public class Mapa_budynku implements Serializable {
     {
         if(level!=this.level) {
             mapView.getOverlays().remove(loadKml.folderOverlays[this.level-levelmin]);
-            trasa_building trasa = (trasa_building) tracking_buliding.getTrasa();
-            //mapView.getOverlays().add(trasa.polyline(level));
+
+            if(tracking_buliding.getLocation()== null | level==(int)tracking_buliding.getLocation().getAltitude()) {
+                    tracking_buliding.setRun(true);
+            }
+            else {
+                tracking_buliding.setRun(false);
+                if(trasa_building.is_level()) {
+                    mapView.getOverlays().remove(trasa_building.polyline);
+                    mapView.getOverlays().removeAll(trasa_building.markers_target);
+                    mapView.getOverlays().add(this.trasa_building.polyline(level));
+                    mapView.getOverlays().addAll(this.trasa_building.print_marker(level));
+                }
+            }
             wczytywanie_mapy(level);
             this.level=level;
         }
@@ -107,11 +118,12 @@ public class Mapa_budynku implements Serializable {
         Item item = search_location.search_in_building(nameRoom, loadKml.print_item_KML());
         if(item!=null) {
             Locale locale=new Locale("PL");
-            Address address= new Address(locale);
+            com.search_location.Address address= new com.search_location.Address(locale);
             address.setFeatureName(item.item.mName);
             address.setLatitude(item.item.getBoundingBox().getCenterLatitude());
             address.setLongitude(item.item.getBoundingBox().getCenterLongitude());
-                tracking_buliding.add_tracking(address);
+            address.setAltitude(item.level+levelmin);
+            tracking_buliding.add_tracking(address);
         }
         else
             Toast.makeText(kontekst, "nie właściwa nazwa pomieszczenia", Toast.LENGTH_SHORT).show();

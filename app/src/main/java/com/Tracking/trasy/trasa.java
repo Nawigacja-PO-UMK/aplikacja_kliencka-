@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class trasa {
-    protected ArrayList<Road> roads;
+    public ArrayList<Road> roads;
     protected ArrayList<String> Tracking;
     public int Color;
     public Polyline polyline=null;
@@ -32,7 +32,7 @@ public abstract class trasa {
     public abstract boolean is_end_tracking(GeoPoint newpoint_start);
     public abstract void  ActualizacjaLotalizacji(GeoPoint newpoint_start);
     public abstract boolean is_route(GeoPoint location);
-
+    public  abstract List<Marker>print_marker();
     public trasa(Road road, String newTracking, Context context, MapView mapView,Marker target)
     {
      new_instancion(road,newTracking,context,mapView,target);
@@ -208,4 +208,8 @@ public abstract class trasa {
         return polyline;
     }
 
+    public List<Marker> markers()
+    {
+        return print_marker();
+    }
 }

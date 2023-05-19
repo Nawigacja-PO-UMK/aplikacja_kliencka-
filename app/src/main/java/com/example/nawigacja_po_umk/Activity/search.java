@@ -59,8 +59,10 @@ public search() {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listView= view.findViewById(R.id.list_item);
-        if(mapa.getMapa_budynku()!=null)
+        if(mapa.getMapa_budynku()!=null) {
             mapa.getMapa_budynku().add_tracking(word);
+            tracking_Activity((Context) getHost(), mapa, screean_tracking);
+        }
         else
             out_side(word);
     }

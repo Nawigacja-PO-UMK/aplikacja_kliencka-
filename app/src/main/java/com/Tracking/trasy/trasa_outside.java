@@ -34,66 +34,61 @@ public class trasa_outside extends trasa {
     @Override
     public boolean is_end_tracking(GeoPoint newpoint_start)
     {
+        if(roads.size()>0) {
             int index = roads.get(0).mRouteHigh.size() - 1;
             return odległość(newpoint_start, roads.get(0).mRouteHigh.get(index)) < delta;
+        }
+        else
+            return false;
     }
 
     @Override
     public void  ActualizacjaLotalizacji(GeoPoint newpoint_start)
     {
+        if(roads.size()>0) {
             Road tmpRoad = roads.get(0);
-            MiniDistance miniDistance=mini_distance_route(newpoint_start);
+            MiniDistance miniDistance = mini_distance_route(newpoint_start);
             GeoPoint between = null;
-            boolean is_remove_lost=false;
-            if(miniDistance.index!=0)
-            {
-                if(miniDistance.index+1==tmpRoad.mRouteHigh.size())
-                {
-                    between=tmpRoad.mRouteHigh.get(miniDistance.index-1);
-                }
-                else
-                {
-                    if(condition_in_between(tmpRoad.mRouteHigh.get(miniDistance.index),
-                            tmpRoad.mRouteHigh.get(miniDistance.index+1),
-                            newpoint_start))
-                    {
-                        between=tmpRoad.mRouteHigh.get(miniDistance.index+1);
-                        is_remove_lost=true;
-                    }
-                    else
-                        if(condition_in_between(tmpRoad.mRouteHigh.get(miniDistance.index),
-                                tmpRoad.mRouteHigh.get(miniDistance.index-1),
-                                newpoint_start))
-                    {
-                        between=tmpRoad.mRouteHigh.get(miniDistance.index-1);
+            boolean is_remove_lost = false;
+            if (miniDistance.index != 0) {
+                if (miniDistance.index + 1 == tmpRoad.mRouteHigh.size()) {
+                    between = tmpRoad.mRouteHigh.get(miniDistance.index - 1);
+                } else {
+                    if (condition_in_between(tmpRoad.mRouteHigh.get(miniDistance.index),
+                            tmpRoad.mRouteHigh.get(miniDistance.index + 1),
+                            newpoint_start)) {
+                        between = tmpRoad.mRouteHigh.get(miniDistance.index + 1);
+                        is_remove_lost = true;
+                    } else if (condition_in_between(tmpRoad.mRouteHigh.get(miniDistance.index),
+                            tmpRoad.mRouteHigh.get(miniDistance.index - 1),
+                            newpoint_start)) {
+                        between = tmpRoad.mRouteHigh.get(miniDistance.index - 1);
                     }
                 }
-            }
-            else
-            {
-                if (condition_in_between(tmpRoad.mRouteHigh.get(0), tmpRoad.mRouteHigh.get(1),newpoint_start)) {
+            } else {
+                if (condition_in_between(tmpRoad.mRouteHigh.get(0), tmpRoad.mRouteHigh.get(1), newpoint_start)) {
                     between = tmpRoad.mRouteHigh.get(1);
-                    is_remove_lost=true;
+                    is_remove_lost = true;
                 }
             }
-            if(between!=null)
-           {
-               double odległośćB=odległość(newpoint_start,between);
-               GeoPoint point=Geopoint_between_Geopoint(tmpRoad.mRouteHigh.get(miniDistance.index),
-                       between,
-                       odległośćB/miniDistance.distance);
-               for(int i=miniDistance.index-1; i>=0;i--) {
-                   tmpRoad.mRouteHigh.remove(i);
+            if (between != null) {
+                double odległośćB = odległość(newpoint_start, between);
+                GeoPoint point = Geopoint_between_Geopoint(tmpRoad.mRouteHigh.get(miniDistance.index),
+                        between,
+                        odległośćB / miniDistance.distance);
+                for (int i = miniDistance.index - 1; i >= 0; i--) {
+                    tmpRoad.mRouteHigh.remove(i);
 
-               }
-                   if(is_remove_lost) {
-                       tmpRoad.mRouteHigh.remove(0);
-                   }
-                   tmpRoad.mRouteHigh.add(0,point);
-               tmpRoad.mLength = distance(0)/1000;
-               tmpRoad.mDuration=tmpRoad.mLength*700;
-           }
+                }
+                if (is_remove_lost) {
+                    tmpRoad.mRouteHigh.remove(0);
+                }
+                tmpRoad.mRouteHigh.add(0, point);
+                tmpRoad.mLength = distance(0) / 1000;
+                tmpRoad.mDuration = tmpRoad.mLength * 700;
+            }
             roads.set(0, tmpRoad);
+        }
     }
 
     private boolean condition_in_between(GeoPoint A,GeoPoint B,GeoPoint point)
@@ -122,8 +117,13 @@ public class trasa_outside extends trasa {
         return mini_distance_route(location).distance< delta;
     }
 
+    @Override
+    public List<Marker> print_marker() {
+        return markers_target;
+    }
 
-   @Override
+
+    @Override
     public List<Marker> bulid_markers_Tracking()
     {
 

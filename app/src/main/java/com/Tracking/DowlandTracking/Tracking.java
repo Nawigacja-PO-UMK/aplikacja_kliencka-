@@ -5,6 +5,9 @@ import static com.google.android.material.internal.ContextUtils.getActivity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.Toast;
+
+import com.Tracking.activity_Tracking;
 
 import org.osmdroid.bonuspack.routing.GraphHopperRoadManager;
 import org.osmdroid.bonuspack.routing.Road;
@@ -16,37 +19,34 @@ public abstract class Tracking {
 
     Context context;
     Stack<GeoPoint> location;
-    int level;
     int lost_level;
     Dialog dialog;
 
-    public Tracking(Context context, int level)
+    public Tracking(Context context)
     {
-        newInstance(context, level);
+        newInstance(context);
     }
 
-    public void newInstance(Context context, int level) {
+    public void newInstance(Context context) {
         this.context=context;
         location=new Stack<GeoPoint>();
-        this.level=level;
+
     }
-    public Road add_tracking(int level,GeoPoint next)
+    public void  add_tracking(GeoPoint next,Road road,activity_Tracking activity_tracking)
     {
         if (location.size()>0)
-        return tracking(lost_level,location.peek(),next,level);
-        return null;
+        tracking(location.peek(),next,road,activity_tracking);
     }
 
-    public Road  Aktulaizuj_location(int level,GeoPoint newlocation)
+    public void  Aktulaizuj_location(int level,GeoPoint newlocation,Road road,activity_Tracking activity_tracking)
     {
-            return Dowland_Tracking(newlocation,location.get(0));
+        Dowland_Tracking(newlocation,location.get(0),road, activity_tracking );
     }
 
-    public Road tracking(int level_begin,GeoPoint begin, GeoPoint end,int level_end)
+    public void tracking(GeoPoint begin, GeoPoint end,Road road,activity_Tracking activity_tracking)
     {
         this.location.push(end);
-        this.lost_level=level_end;
-            return Dowland_Tracking(begin,end);
+        Dowland_Tracking(begin,end,road,activity_tracking);
     }
 
     public void Remove_Tracking(int index)
@@ -58,6 +58,6 @@ public abstract class Tracking {
         location.removeAllElements();
     }
 
-    protected abstract Road Dowland_Tracking(GeoPoint begin, GeoPoint end);
+    protected abstract void Dowland_Tracking(GeoPoint begin, GeoPoint end,Road road,activity_Tracking activity_tracking);
 
 }

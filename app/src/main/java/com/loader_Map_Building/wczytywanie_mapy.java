@@ -60,6 +60,8 @@ public class wczytywanie_mapy implements Runnable {
             }
             //////
 
+
+
             folderOverlays[index].setName("Floor"+level);
         }
 }

@@ -12,12 +12,22 @@ public class Address extends android.location.Address implements Serializable {
      */
     String facebook;
     String open_closs;
+    public double Altitude;
     public Address(Locale locale) {
         super(locale);
         facebook=null;
         open_closs=null;
     }
 
+    public double getAltitude()
+    {
+        return this.Altitude;
+    }
+
+    public void  setAltitude(double Altitude)
+    {
+        this.Altitude=Altitude;
+    }
     public void setFacebook(String facebook) {
         this.facebook = facebook;
     }
