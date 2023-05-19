@@ -41,9 +41,8 @@ public class Loader_map implements Akcje_na_lokacizacji {
 
     @Override
     public boolean warunek(Location location) {
-        return true;
-        //box.getLatNorth()>location.getLatitude() && box.getLatSouth()<location.getLatitude()
-                //&& box.getLonEast()>location.getLongitude() && box.getLonWest()<location.getLongitude();
+        return box.getLatNorth()>location.getLatitude() && box.getLatSouth()<location.getLatitude()
+                && box.getLonEast()>location.getLongitude() && box.getLonWest()<location.getLongitude();
     }
 
     @Override
