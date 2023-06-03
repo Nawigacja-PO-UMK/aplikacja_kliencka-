@@ -16,7 +16,7 @@ public class Map_Overpass extends OverpassAPIProvider {
         String sBB = "(" + bb.getLatSouth() + "," + bb.getLonWest() + "," + bb.getLatNorth() + "," + bb.getLonEast() + ")";
         String data =
                 "[out:json][timeout:" + timeout + "];" +
-                        "(way[amenity]" + sBB +
+                        "(way[amenity][operator]" + sBB +
                         ";way[" + tag + "] [!highway][room]" + sBB +
                         ";way[" + tag + "] [!highway][indoor]" + sBB +
                         ";way[" + tag + "] [highway=\"elevator\"]" + sBB +";);"
