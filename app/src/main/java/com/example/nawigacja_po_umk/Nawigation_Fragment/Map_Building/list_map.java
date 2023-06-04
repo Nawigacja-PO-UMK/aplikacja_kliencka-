@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.nawigacja_po_umk.Dowloader_list_map;
 import com.example.nawigacja_po_umk.MainActivity;
 import com.example.nawigacja_po_umk.Nawigation_Fragment.Nawigation.Nawigation;
 import com.example.nawigacja_po_umk.R;
@@ -25,12 +26,9 @@ import java.util.List;
 
 public class list_map extends Fragment {
 
-
-
     public list_map() {
+
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,22 +47,20 @@ public class list_map extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ListView maps = view.findViewById(R.id.Map_list_item);
-        List<String> strings = new ArrayList<>();
-        strings.add("Mapa UMK Wydział fizyki ,Astronimi i informatyki stosowanej");
-        maps.setAdapter(new ArrayAdapter<String>(((MainActivity) getHost()), R.layout.item_map, strings));
+        maps.setAdapter(new ArrayAdapter<String>(((MainActivity) getHost()), R.layout.item_map, Dowloader_list_map.getList_name_map()));
         ///lokaclizacja mapy
-        BoundingBox box_map_umk = new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197);
         maps.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Nawigation nawigation = new Nawigation();
                 Bundle bundle=new Bundle();
-                bundle.putDouble("x",box_map_umk.getCenterLatitude());
-                bundle.putDouble("y",box_map_umk.getCenterLongitude());
-                bundle.putDouble("n",box_map_umk.getLatNorth());
-                bundle.putDouble("s",box_map_umk.getLatSouth());
-                bundle.putDouble("e",box_map_umk.getLonEast());
-                bundle.putDouble("w",box_map_umk.getLonWest());
+                BoundingBox box=Dowloader_list_map.get_list().get(position);
+                bundle.putDouble("x",box.getCenterLatitude());
+                bundle.putDouble("y",box.getCenterLongitude());
+                bundle.putDouble("n",box.getLatNorth());
+                bundle.putDouble("s",box.getLatSouth());
+                bundle.putDouble("e",box.getLonEast());
+                bundle.putDouble("w",box.getLonWest());
                 nawigation.setArguments(bundle);
                 ((MainActivity) getHost()).replace_fragment(nawigation, R.id.conteinter_Map_building);
             }

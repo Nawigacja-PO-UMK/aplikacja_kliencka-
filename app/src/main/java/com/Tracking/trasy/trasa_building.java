@@ -16,7 +16,10 @@ public class trasa_building extends  trasa {
 
 
     private  int level;
-    public trasa_building(int level){ super();this.level=level;}
+    public List<Polyline> polylines;
+    public trasa_building(int level){super();this.level=level;
+
+        polylines=new ArrayList<>();}
 
 
     public void setLevel(int level) {
@@ -63,18 +66,29 @@ public class trasa_building extends  trasa {
             return 0;
     }
     @SuppressLint("SuspiciousIndentation")
-    public Polyline polyline(int level)
+    public List<Polyline> polyline(int level)
     {
+        polylines= new ArrayList<>();
         polyline=new Polyline();
         ArrayList<GeoPoint> points=All_print_point();
-        for(int i=0;i<points.size();i++)
-        {
-            if(points.get(i).getAltitude()==level)
-            polyline.addPoint(points.get(i));
-        }
+            for (int i = 0; i < points.size(); i++) {
+                if (points.get(i).getAltitude() == level)
+                    polyline.addPoint(points.get(i));
+                else
+                {
+                    if(polyline.getActualPoints().size()>0) {
+                        polyline.setWidth(7.0f);
+                        polyline.setColor(Color);
+                        polylines.add(polyline);
+                        polyline = new Polyline();
+                    }
+                }
+            }
         polyline.setWidth(7.0f);
         polyline.setColor(Color);
-        return polyline;
+        polylines.add(polyline);
+
+        return polylines;
     }
 
     @Override

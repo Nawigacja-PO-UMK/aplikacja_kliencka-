@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.Text_convert_voice;
 import com.Tracking.DowlandTracking.Tracking;
 import com.Tracking.trasy.trasa;
+import com.Tracking.trasy.trasa_building;
 import com.example.nawigacja_po_umk.Add_marker;
 import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
 import com.lokalizator.Akcje_na_lokacizacji;
@@ -181,6 +182,8 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
             remove_polyline(trasa.polyline);
             typtrasa.polyline=null;
             typtrasa.roads.clear();
+            if(typtrasa instanceof trasa_building)
+            mapView.getOverlays().removeAll(((trasa_building) typtrasa).polylines);
             mapView.getOverlays().removeAll(trasa.getMarkers_instruction());
             trasa.remove_Markers();
             trasa.removeTargets();

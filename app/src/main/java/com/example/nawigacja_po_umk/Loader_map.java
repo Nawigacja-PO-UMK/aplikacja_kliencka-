@@ -26,8 +26,10 @@ public class Loader_map implements Akcje_na_lokacizacji {
     private screean_Tracking screean_tracking;
     in_building in_door;
     private  activity_Tracking oldtracking;
+    Dowloader_list_map dowloader_list_map;
     Loader_map(BoundingBox box, MapView mapView, Context kontekst, com.lokalizator.uniwersal_location location, screean_Tracking screean_tracking, activity_Tracking oldtracking)
    {
+       dowloader_list_map=new Dowloader_list_map(kontekst);
        this.box=box;
        this.kontekst=kontekst;
        this.mapView=mapView;
@@ -41,8 +43,20 @@ public class Loader_map implements Akcje_na_lokacizacji {
 
     @Override
     public boolean warunek(Location location) {
-        return box.getLatNorth()>location.getLatitude() && box.getLatSouth()<location.getLatitude()
-                && box.getLonEast()>location.getLongitude() && box.getLonWest()<location.getLongitude();
+
+        dowloader_list_map.setActualmap(dowloader_list_map.get_list().get(1));
+        return true;
+        /*
+        for (BoundingBox box:dowloader_list_map.get_list()) {
+            if(box.getLatNorth()>location.getLatitude() && box.getLatSouth()<location.getLatitude()
+            && box.getLonEast()>location.getLongitude() && box.getLonWest()<location.getLongitude())
+            {
+                dowloader_list_map.setActualmap(box);
+                return true;
+            }
+        }
+        return false;
+         */
     }
 
     @Override
@@ -50,7 +64,7 @@ public class Loader_map implements Akcje_na_lokacizacji {
     {
         this.oldtracking.setRun(false);
            if (mapa_budynku == null) {
-               mapa_budynku = new Mapa_budynku(kontekst, box,mapView,screean_tracking);
+               mapa_budynku = new Mapa_budynku(kontekst,dowloader_list_map.actualmap,mapView,screean_tracking);
                mapa_budynku.wczytywanie_mapy(0);
                Bundle bundle=new Bundle();
                bundle.putSerializable("mapa",mapa_budynku);

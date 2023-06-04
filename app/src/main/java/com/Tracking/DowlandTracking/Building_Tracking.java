@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osmdroid.bonuspack.routing.Road;
+import org.osmdroid.bonuspack.routing.RoadNode;
 import org.osmdroid.util.GeoPoint;
 
 import java.io.IOException;
@@ -125,8 +126,11 @@ public class Building_Tracking extends Tracking {
         for (int i=0;i< jsonArray.length();i++) {
             try {
                 JSONObject way=jsonArray.getJSONObject(i);
+                double level=way.getDouble("level");
+                if(way.getString("level").length()>2)
+                    level=0.5;
                 GeoPoint point=new GeoPoint(way.getDouble("Y"),
-                        way.getDouble("X"),way.getDouble("level"));
+                        way.getDouble("X"),level);
                 trasa.mRouteHigh.add(point);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -144,12 +148,14 @@ public class Building_Tracking extends Tracking {
                 try {
                     jsonArray = new JSONArray(result);
                     parss_JSON_Road(jsonArray,road);
+                    add_Nodess(road);
                     trasa_building trasa_building =(trasa_building)activity_tracking.trasa;
+                    activity_tracking.screean_tracking.update_descryption(trasa_building);
                     activity_tracking.mapView.getOverlays().removeAll(trasa_building.markers_target);
                     activity_tracking.mapView.getOverlays().addAll(trasa_building.print_marker(Mapa_budynku.level));
                     activity_tracking.mapView.getOverlays().remove(trasa_building.polyline);
-                    activity_tracking.mapView.getOverlays().add(trasa_building.polyline(Mapa_budynku.level));
-
+                    activity_tracking.mapView.getOverlays().removeAll(trasa_building.polylines);
+                    activity_tracking.mapView.getOverlays().addAll(trasa_building.polyline(Mapa_budynku.level));
                 } catch (JSONException ex) {
                     ex.printStackTrace();
                     jsonArray = new JSONArray();
@@ -160,5 +166,81 @@ public class Building_Tracking extends Tracking {
         });
 
     }
+
+private void addinstruction(Road road,GeoPoint geoPoint,String instruction)
+    {
+        RoadNode roadNode=new RoadNode();
+        roadNode.mInstructions=instruction;
+        roadNode.mLocation=geoPoint;
+        road.mNodes.add(roadNode);
+    }
+
+    private void add_Nodess(Road road) {
+
+        road.mNodes=new ArrayList<>();
+        addinstruction(road,road.mRouteHigh.get(0),"kontynłuj");
+
+        for(int i=2;i<road.mRouteHigh.size();i++)
+     {
+         if(search_angle2(road.mRouteHigh,i)>0)
+         {
+             if(search_angle(road.mRouteHigh,i)>35 && search_angle(road.mRouteHigh,i)+Math.abs(search_angle2(road.mRouteHigh,i))>160)
+                 addinstruction(road,road.mRouteHigh.get(i-1),"skręć w lewo "+
+                         String.valueOf(search_angle(road.mRouteHigh,i))+" a2:"+String.valueOf(search_angle2(road.mRouteHigh,i)));
+
+         }
+
+         if(search_angle2(road.mRouteHigh,i)<0)
+         {
+             if(search_angle(road.mRouteHigh,i)>35&&search_angle(road.mRouteHigh,i)+Math.abs(search_angle2(road.mRouteHigh,i))>160)
+                 addinstruction(road,road.mRouteHigh.get(i-1),"skręć w prawo "+
+                         String.valueOf(search_angle(road.mRouteHigh,i))+" a2:"+String.valueOf(search_angle2(road.mRouteHigh,i)));
+
+         }
+         if(road.mRouteHigh.get(i).getAltitude()%1.0>0.3)
+         {
+             Toast.makeText(context, "dziala", Toast.LENGTH_SHORT).show();
+             addinstruction(road,road.mRouteHigh.get(i-1),"idz po schodach");
+         }
+
+     }
+        addinstruction(road,road.mRouteHigh.get(road.mRouteHigh.size()-1),"Dotarleś do celu");
+    }
+
+    double search_angle(ArrayList<GeoPoint> points,int i)
+    {
+        double[] V1={points.get(i).getLatitude()-points.get(i-1).getLatitude(),points.get(i).getLongitude()-points.get(i-1).getLongitude()};
+        double[] V2={points.get(i-1).getLatitude()-points.get(i-2).getLatitude(),points.get(i-1).getLongitude()-points.get(i-2).getLongitude()};
+
+        double wynik=(V1[0]*V2[0])+(V1[1]*V2[1])/(
+                Math.sqrt(Math.pow(V1[0],2)+Math.pow(V1[1],2))*Math.sqrt(Math.pow(V2[0],2)+Math.pow(V2[1],2)));
+        //Toast.makeText(context, String.valueOf(Math.toDegrees(Math.acos(wynik))), Toast.LENGTH_SHORT).show();
+        return Math.toDegrees(Math.acos(wynik));
+
+       //double wynik=Math.toDegrees(Math.atan2((V1[0]*V2[1])-(V1[1]*V2[0]),(V1[0]*V2[0]) - (V1[1]*V2[1])));
+
+        //if(wynik)
+        //return wynik;
+    }
+
+    double search_angle2(ArrayList<GeoPoint> points,int i)
+    {
+        double[] V1={points.get(i).getLatitude()-points.get(i-1).getLatitude(),points.get(i).getLongitude()-points.get(i-1).getLongitude()};
+        double[] V2={points.get(i-1).getLatitude()-points.get(i-2).getLatitude(),points.get(i-1).getLongitude()-points.get(i-2).getLongitude()};
+
+       // double wynik=(V1[0]*V2[0])+(V1[1]*V2[1])/(
+         //       Math.sqrt(Math.pow(V1[0],2)+Math.pow(V1[1],2))*Math.sqrt(Math.pow(V2[0],2)+Math.pow(V2[1],2)));
+        //Toast.makeText(context, String.valueOf(Math.toDegrees(Math.acos(wynik))), Toast.LENGTH_SHORT).show();
+        //return Math.toDegrees(Math.acos(wynik));
+
+        double wynik=Math.toDegrees(Math.atan2((V1[0]*V2[1])-(V1[1]*V2[0]),(V1[0]*V2[0]) - (V1[1]*V2[1])));
+
+        //if(wynik)
+        return wynik;
+    }
+
+
+
+
 
 }

@@ -96,17 +96,18 @@ public class Mapa_budynku implements Serializable {
         if(level!=this.level) {
             mapView.getOverlays().remove(loadKml.folderOverlays[this.level-levelmin]);
 
-            if(tracking_buliding.getLocation()== null | level==(int)tracking_buliding.getLocation().getAltitude()) {
+            if(tracking_buliding.getLocation()== null |(tracking_buliding.getLocation()!=null && level==(int)tracking_buliding.getLocation().getAltitude())) {
                     tracking_buliding.setRun(true);
             }
             else {
                 tracking_buliding.setRun(false);
-                if(trasa_building.is_level()) {
-                    mapView.getOverlays().remove(trasa_building.polyline);
-                    mapView.getOverlays().removeAll(trasa_building.markers_target);
-                    mapView.getOverlays().add(this.trasa_building.polyline(level));
-                    mapView.getOverlays().addAll(this.trasa_building.print_marker(level));
-                }
+            }
+            if(trasa_building.is_level()) {
+                mapView.getOverlays().remove(trasa_building.polyline);
+                mapView.getOverlays().removeAll(trasa_building.polylines);
+                mapView.getOverlays().removeAll(trasa_building.markers_target);
+                mapView.getOverlays().addAll(this.trasa_building.polyline(level));
+                mapView.getOverlays().addAll(this.trasa_building.print_marker(level));
             }
             wczytywanie_mapy(level);
             this.level=level;

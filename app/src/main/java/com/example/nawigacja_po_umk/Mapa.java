@@ -57,7 +57,6 @@ public class Mapa implements Serializable , MapEventsReceiver {
     {
         this.kontekst = kontekst;
         this.mapView = mapView;
-
         mapView.setTileSource(tileSource);
         mapController = mapView.getController();
         mapController.setZoom(15);
@@ -164,4 +163,5 @@ public class Mapa implements Serializable , MapEventsReceiver {
           if(tracking.trasa!=null)
           search.tracking_Activity(kontekst,this,screean_tracking);
     }
+
 }
