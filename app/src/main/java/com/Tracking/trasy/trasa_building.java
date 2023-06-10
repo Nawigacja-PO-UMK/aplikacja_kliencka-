@@ -238,7 +238,7 @@ public class trasa_building extends  trasa {
                 markers_instruction.add(nodeMarker);
             }
         }
-        return markers_instruction;
+        return new ArrayList<>();//markers_instruction;
     }
 
     public boolean is_level() {

@@ -1,14 +1,30 @@
 package com.example.nawigacja_po_umk.Nawigation_Fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.wifi.rtt.WifiRttManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.nawigacja_po_umk.Mapa;
 import com.example.nawigacja_po_umk.R;
+import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
+import com.search_location.search_location;
+
+import org.osmdroid.views.MapView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,7 +76,36 @@ public class time extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_time, container, false);
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        TextView search_wifi=view.findViewById(R.id.wifi);
+
+        search_wifi.setText(String.valueOf(getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI_RTT)));
+
+
+        WifiRttManager wifiRttManager= (WifiRttManager) getContext().getSystemService(Context.WIFI_RTT_RANGING_SERVICE);
+
+        search_wifi.setText(String.valueOf(wifiRttManager.isAvailable()));
+        IntentFilter filter =
+                new IntentFilter(WifiRttManager.ACTION_WIFI_RTT_STATE_CHANGED);
+        BroadcastReceiver myReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+
+                Toast.makeText(context, "dział", Toast.LENGTH_SHORT).show();
+            }
+        };
+        getContext().registerReceiver(myReceiver, filter);
+
+
+
     }
 }

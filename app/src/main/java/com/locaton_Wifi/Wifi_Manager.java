@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +41,11 @@ public class Wifi_Manager extends AppCompatActivity {
         };
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-        kontekst.registerReceiver(wifiScanReceiver, intentFilter);
+        HandlerThread handlerThread = new HandlerThread("ht");
+        handlerThread.start();
+        Looper looper = handlerThread.getLooper();
+        Handler handler = new Handler(looper);
+        kontekst.registerReceiver(wifiScanReceiver, intentFilter,null,handler);
         Wifi.startScan();
     }
     public List<ScanResult>  Skanowanie()

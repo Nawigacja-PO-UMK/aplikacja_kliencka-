@@ -93,6 +93,18 @@ public abstract class trasa {
         }
         return distance;
     }
+
+   static public double Distance(Road road)
+   {
+       double distance=0;
+       for(int i=1; i<road.mRouteHigh.size();i++)
+       {
+           distance+=road.mRouteHigh.get(i).distanceToAsDouble(road.mRouteHigh.get(i-1));
+       }
+       return distance;
+   }
+
+
     public MiniDistance mini_distance_route(GeoPoint location)
     {
         MiniDistance minidistance=new MiniDistance();
@@ -179,7 +191,7 @@ public abstract class trasa {
 
     public List<Marker> getMarkers_instruction()
     {
-        return markers_instruction;
+        return new ArrayList<>();///markers_instruction;
     }
     public void  remove_Markers()
     {

@@ -137,8 +137,8 @@ public class Building_Tracking extends Tracking {
             }
         }
         trasa.mStatus=Road.STATUS_OK;
-        trasa.mLength=10;
-        trasa.mDuration=100;
+        trasa.mLength=com.Tracking.trasy.trasa.Distance(trasa)/1000;
+        trasa.mDuration=trasa.mLength* 700;
     }
     @Override
     public void Dowland_Tracking(GeoPoint begin, GeoPoint end,Road road, activity_Tracking activity_tracking) {

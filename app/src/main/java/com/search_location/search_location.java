@@ -13,6 +13,7 @@ import org.osmdroid.util.GeoPoint;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -90,18 +91,19 @@ static public GeoPoint my_car;
         }else
             return address.getFeatureName();
     }
-    static public Item search_in_building(@NotNull String name, KmlFeature[][] items)
+    static public List<Item> search_in_building(@NotNull String name, KmlFeature[][] items)
     {
+        List<Item> ITEMS= new ArrayList<>();
         for (int j=0;j< items.length;j++) {
             for (int i = 0; i < items[j].length; i++) {
-                if (items[j][i].mName != null && items[j][i].mName.equals(name)) {
-                    Item item=new Item(items[j][i],j);
-                    return item;
+                if (items[j][i].mName != null) {
+                    ITEMS.add(new Item(items[j][i],j));
                 }
             }
         }
-        return null;
+           return  ITEMS;
     }
+
 
 
 

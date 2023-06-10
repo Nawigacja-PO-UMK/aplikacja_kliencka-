@@ -19,6 +19,7 @@ import com.Tracking.DowlandTracking.Tracking;
 import com.search_location.search_location;
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.kml.KmlFeature;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.views.MapView;
@@ -114,9 +115,14 @@ public class Mapa_budynku implements Serializable {
         }
     }
 
+    public KmlFeature[][] get_item()
+    {
+        return loadKml.print_item_KML();
+    }
+
     public void add_tracking(String nameRoom)
     {
-        Item item = search_location.search_in_building(nameRoom, loadKml.print_item_KML());
+        Item item = search_location.search_in_building(nameRoom, loadKml.print_item_KML()).get(0);
         if(item!=null) {
             Locale locale=new Locale("PL");
             com.search_location.Address address= new com.search_location.Address(locale);

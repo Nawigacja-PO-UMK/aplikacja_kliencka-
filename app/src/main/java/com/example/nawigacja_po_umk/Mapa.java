@@ -19,6 +19,7 @@ import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
 import com.loader_Map_Building.Mapa_budynku;
 import com.lokalizator.Akcje_na_lokacizacji;
 import com.lokalizator.Location;
+import com.lokalizator.WifiMYLocationProvider;
 import com.lokalizator.uniwersal_location;
 import com.search_location.search_location;
 
@@ -68,6 +69,7 @@ public class Mapa implements Serializable , MapEventsReceiver {
         mapEventsOverlay = new MapEventsOverlay(kontekst, this);
         mapView.getOverlays().add(0, mapEventsOverlay);
         sourceLocation=new uniwersal_location(kontekst);
+        //sourceLocation.setLocation_builging(true);
 
         tracking=new activity_Tracking(mapView,kontekst,new trasa_outside(), new OSRM_Tracking(kontekst),screean_tracking);
         this.loader_map= new Loader_map(new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197),
@@ -133,12 +135,18 @@ public class Mapa implements Serializable , MapEventsReceiver {
 
     @Override
     public boolean longPressHelper(GeoPoint p) {
-        List<Address> addresses = search_location.search(p, 1);
-        Toast.makeText(kontekst, String.valueOf(road.mRouteHigh.size()), Toast.LENGTH_SHORT).show();
+        Address addresses = null;
+        if(mapa_budynku==null) {
+            addresses= search_location.search(p, 1).get(0);
+       }
+       else
+       {
+
+       }
         if (marker != null)
             mapView.getOverlays().remove(marker);
-        if (marker == null || marker.getPosition().distanceToAsDouble(p) > 20) {
-            marker = Add_marker.Add_marker(addresses.get(0), kontekst, mapView);
+        if ((marker == null || marker.getPosition().distanceToAsDouble(p) > 20)&& addresses!=null) {
+            marker = Add_marker.Add_marker(addresses, kontekst, mapView);
             mapView.getOverlays().add(marker);
         } else
             marker = null;

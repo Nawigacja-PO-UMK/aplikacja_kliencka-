@@ -135,7 +135,7 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
                 trasa=typtrasa;
             }
             mapView.getOverlays().add(0,trasa.polyline());
-            mapView.getOverlays().addAll(1,trasa.bulid_markers_Tracking());
+           // mapView.getOverlays().addAll(1,trasa.bulid_markers_Tracking());
             trasa.add_last_Target();
             mapView.invalidate();
         }

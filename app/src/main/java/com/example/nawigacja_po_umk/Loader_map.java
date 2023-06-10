@@ -16,6 +16,8 @@ import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
+import java.util.Date;
+
 public class Loader_map implements Akcje_na_lokacizacji {
 
     Mapa_budynku mapa_budynku;
@@ -44,7 +46,7 @@ public class Loader_map implements Akcje_na_lokacizacji {
     @Override
     public boolean warunek(Location location) {
 
-        dowloader_list_map.setActualmap(dowloader_list_map.get_list().get(1));
+        dowloader_list_map.setActualmap(new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197));
         return true;
         /*
         for (BoundingBox box:dowloader_list_map.get_list()) {
@@ -62,6 +64,7 @@ public class Loader_map implements Akcje_na_lokacizacji {
     @Override
     public void Akcja(Location location)
     {
+        this.location.setLocation_builging(true);
         this.oldtracking.setRun(false);
            if (mapa_budynku == null) {
                mapa_budynku = new Mapa_budynku(kontekst,dowloader_list_map.actualmap,mapView,screean_tracking);
@@ -74,20 +77,19 @@ public class Loader_map implements Akcje_na_lokacizacji {
          else {
                if (mapa_budynku.tracking_buliding.warunek(location))
                    mapa_budynku.tracking_buliding.Akcja(location);
+              }
 
-           }
-           /*
            if(this.location.isLocation_builging())
             {
-             if (mapa_budynku.get_level_trasa() == )
+             if ( location.getAltitude() != mapa_budynku.level() )
               mapa_budynku.wczytaj_nowa_mape((int) location.getAltitude());
             }
            else
            {
                this.location.setLocation_builging(true);
            }
-           /
- */
+
+
 
     }
 

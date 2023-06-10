@@ -16,8 +16,8 @@ public class Location  {
     private IMapController mapController;
     public boolean seting_center;
     public android.location.Location Location;
-    private uniwersal_location LocationSource;
-    public Location(Context kontekst, MapView mapView, Akcje_na_lokacizacji[] Akcje,uniwersal_location locationSource,GeoPoint new_kow_location)
+    private uniwersal_location  LocationSource;
+    public Location(Context kontekst, MapView mapView, Akcje_na_lokacizacji[] Akcje,uniwersal_location  locationSource,GeoPoint new_kow_location)
     {
         this.kontekst=kontekst;
         this.mapView=mapView;
@@ -37,6 +37,7 @@ public class Location  {
                 @Override
                 public void onLocationChanged(android.location.Location location, IMyLocationProvider source) {
                 super.onLocationChanged(location, source);
+
                 last_kow_location=new GeoPoint(location.getLatitude(),location.getLongitude());
 
                 if(!seting_center) {
@@ -59,7 +60,7 @@ public class Location  {
     }
 
 
-    public uniwersal_location getLocationSource() {
+    public uniwersal_location  getLocationSource() {
         return LocationSource;
     }
 
