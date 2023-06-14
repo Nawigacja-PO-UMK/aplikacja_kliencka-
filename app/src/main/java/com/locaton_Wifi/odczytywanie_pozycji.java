@@ -101,6 +101,8 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi {
             protected Map<String,String> getParams()
             {
                 Map<String,String> wysyłane= new HashMap<String,String>();
+
+                //Toast.makeText(kontekst, JSON, Toast.LENGTH_SHORT).show();
                 wysyłane.put("skan",JSON);
                 return wysyłane;
             }
@@ -110,15 +112,7 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi {
 
     }
 
-    public void test_odebrane_dane()
-    {
-        try {
-            odbieranie_danych("{\"XY\":[[53.01704699524566, 18.602757623104807]]}");
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(kontekst, "nie działa", Toast.LENGTH_SHORT).show();
-        }
-    }
+
 
 
 
