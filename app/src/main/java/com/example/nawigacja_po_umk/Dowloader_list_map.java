@@ -38,7 +38,7 @@ public class Dowloader_list_map {
     BoundingBox actualmap;
     public JSONArray jsonArray;
     private URL url;
-    String url_string= "https://34.125.80.2/server/serwe/list_map.php";
+    String url_string= "https://34.125.216.223/server/serwe/list_map.php";
     RequestQueue gniazdo;
     Context context;
     Response.Listener response;

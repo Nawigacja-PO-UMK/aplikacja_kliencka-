@@ -44,7 +44,7 @@ public class Building_Tracking extends Tracking {
     static boolean END;
     public JSONArray jsonArray;
     private URL url;
-    String url_string= "https://34.125.80.2/server/serwe/ways_guery.php";
+    String url_string= "https://34.125.216.223/server/serwe/ways_guery.php";
     RequestQueue gniazdo;
     Response.Listener response;
     //activity_Tracking activity_tracking;

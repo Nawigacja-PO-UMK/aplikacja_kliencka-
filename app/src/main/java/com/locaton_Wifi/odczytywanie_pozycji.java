@@ -58,7 +58,7 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi {
         kiedy_zakończyć=false;
         actual_time=(new Date()).getTime();
         try {
-            url=new URL("https://34.125.80.2/MLModel/location_wifi.php");
+            url=new URL("https://34.125.216.223/MLModel/location_wifi.php");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -127,8 +127,8 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi {
         współrzedne współrzedne=new współrzedne();
         JSONArray XY=jsonObject.getJSONArray("XY").getJSONArray(0);
 
-        współrzedne.X= XY.getDouble(0);
-        współrzedne.Y=XY.getDouble(1);
+        współrzedne.X= XY.getDouble(1);
+        współrzedne.Y=XY.getDouble(0);
         współrzedne.Z=0;
         zmian_pozycji_wskaźnika(współrzedne);
     }
