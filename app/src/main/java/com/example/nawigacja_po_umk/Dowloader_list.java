@@ -1,7 +1,6 @@
 package com.example.nawigacja_po_umk;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,19 +30,19 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-public class Dowloader_list_map {
+public class Dowloader_list {
 
     static List<BoundingBox> list_map;
     static List<String> list_name_map;
     BoundingBox actualmap;
     public JSONArray jsonArray;
     private URL url;
-    String url_string= "https://34.125.216.223/server/serwe/list_map.php";
+
     RequestQueue gniazdo;
     Context context;
     Response.Listener response;
 
-    Dowloader_list_map(Context context)
+    Dowloader_list(Context context,String url_string)
     {
         list_map=new ArrayList<>();
         list_name_map=new ArrayList<>();

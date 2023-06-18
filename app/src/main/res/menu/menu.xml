@@ -3,7 +3,7 @@
     <item android:id="@+id/nawigation"
         android:title="Nawigacja"
         android:icon="@drawable/icons8nearme24"></item>
-    <item android:title="mapy"
+    <item android:title="Mapy"
         android:id="@+id/mapy"
         android:icon="@drawable/icons8map50"/>
     <item android:title="Czas Przelotu(Beta)"

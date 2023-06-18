@@ -52,7 +52,7 @@ public class Mapa implements Serializable , MapEventsReceiver {
     public Marker marker;
     public static ITileSource tileSource=TileSource_Mapbox();
     public  uniwersal_location  sourceLocation;
-    Road road= new Road();
+    Dowloader_list_evacuation dowloader_list_evacuation;
 
     public Mapa(Context kontekst, MapView mapView, screean_Tracking screean_tracking)
     {
@@ -72,9 +72,9 @@ public class Mapa implements Serializable , MapEventsReceiver {
         //sourceLocation.setLocation_builging(true);
 
         tracking=new activity_Tracking(mapView,kontekst,new trasa_outside(), new OSRM_Tracking(kontekst),screean_tracking);
-        this.loader_map= new Loader_map(new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197),
-                mapView,kontekst,sourceLocation,screean_tracking,tracking);
-        location=new Location(kontekst,mapView, new Akcje_na_lokacizacji[]{loader_map, tracking},sourceLocation,null);
+        this.loader_map= new Loader_map(mapView,kontekst,sourceLocation,screean_tracking,tracking);
+        dowloader_list_evacuation=new Dowloader_list_evacuation(kontekst,tracking);
+        location=new Location(kontekst,mapView, new Akcje_na_lokacizacji[]{loader_map, tracking,dowloader_list_evacuation},sourceLocation,null);
        // Building_Tracking building_tracking=new Building_Tracking(kontekst);
 
        /// GeoPoint point=new GeoPoint(18.60515,53.01784,-1);
@@ -164,10 +164,10 @@ public class Mapa implements Serializable , MapEventsReceiver {
            mapEventsOverlay = new MapEventsOverlay(kontekst, this);
            mapView.getOverlays().add(0, mapEventsOverlay);
            sourceLocation=new uniwersal_location(kontekst);
-           this.loader_map= new Loader_map(new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197),
-                   mapView,kontekst,sourceLocation,screean_tracking,tracking);
+           this.loader_map= new Loader_map(mapView,kontekst,sourceLocation,screean_tracking,tracking);
            tracking.newinstancjon(mapView,screean_tracking);
-          location=new Location(kontekst,mapView, new Akcje_na_lokacizacji[]{loader_map, tracking},sourceLocation,this.location.getMyLocation());
+           dowloader_list_evacuation=new Dowloader_list_evacuation(kontekst,tracking);
+           location=new Location(kontekst,mapView, new Akcje_na_lokacizacji[]{loader_map, tracking,dowloader_list_evacuation},sourceLocation,this.location.getMyLocation());
           if(tracking.trasa!=null)
           search.tracking_Activity(kontekst,this,screean_tracking);
     }

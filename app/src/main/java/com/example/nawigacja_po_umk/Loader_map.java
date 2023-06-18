@@ -4,35 +4,32 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
-
 import com.Tracking.activity_Tracking;
+import com.android.volley.toolbox.Volley;
 import com.example.nawigacja_po_umk.Activity.in_building;
 import com.example.nawigacja_po_umk.ekran_Tracking.screean_Tracking;
 import com.loader_Map_Building.Mapa_budynku;
 import com.lokalizator.Akcje_na_lokacizacji;
 
 import org.osmdroid.util.BoundingBox;
-import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-
-import java.util.Date;
 
 public class Loader_map implements Akcje_na_lokacizacji {
 
     Mapa_budynku mapa_budynku;
    private com.lokalizator.uniwersal_location location;
-    private BoundingBox box;
+
     private MapView mapView;
     private  Context kontekst;
     private screean_Tracking screean_tracking;
     in_building in_door;
     private  activity_Tracking oldtracking;
-    Dowloader_list_map dowloader_list_map;
-    Loader_map(BoundingBox box, MapView mapView, Context kontekst, com.lokalizator.uniwersal_location location, screean_Tracking screean_tracking, activity_Tracking oldtracking)
+    Dowloader_list dowloader_list_map;
+    Loader_map( MapView mapView, Context kontekst, com.lokalizator.uniwersal_location location, screean_Tracking screean_tracking, activity_Tracking oldtracking)
    {
-       dowloader_list_map=new Dowloader_list_map(kontekst);
-       this.box=box;
+       String url_string= "https://34.125.216.223/server/serwe/list_map.php";
+       dowloader_list_map=new Dowloader_list(kontekst,url_string);
+
        this.kontekst=kontekst;
        this.mapView=mapView;
        mapa_budynku=null;
@@ -46,10 +43,10 @@ public class Loader_map implements Akcje_na_lokacizacji {
     @Override
     public boolean warunek(Location location) {
 
-        dowloader_list_map.setActualmap(new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197));
+       dowloader_list_map.setActualmap(new BoundingBox(53.01784, 18.60515, 53.01673, 18.60197));
         return true;
-        /*
-        for (BoundingBox box:dowloader_list_map.get_list()) {
+
+      /*  for (BoundingBox box:dowloader_list_map.get_list()) {
             if(box.getLatNorth()>location.getLatitude() && box.getLatSouth()<location.getLatitude()
             && box.getLonEast()>location.getLongitude() && box.getLonWest()<location.getLongitude())
             {
@@ -57,8 +54,9 @@ public class Loader_map implements Akcje_na_lokacizacji {
                 return true;
             }
         }
+
         return false;
-         */
+*/
     }
 
     @Override
@@ -79,7 +77,7 @@ public class Loader_map implements Akcje_na_lokacizacji {
                    mapa_budynku.tracking_buliding.Akcja(location);
               }
 
-           if(this.location.isLocation_builging())
+         /*  if(this.location.isLocation_builging())
             {
              if ( location.getAltitude() != mapa_budynku.level() )
               mapa_budynku.wczytaj_nowa_mape((int) location.getAltitude());
@@ -89,7 +87,7 @@ public class Loader_map implements Akcje_na_lokacizacji {
                this.location.setLocation_builging(true);
            }
 
-
+*/
 
     }
 

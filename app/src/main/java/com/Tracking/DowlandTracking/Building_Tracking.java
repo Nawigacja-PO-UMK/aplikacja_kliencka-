@@ -105,7 +105,7 @@ public class Building_Tracking extends Tracking {
                 Map<String,String> wysyłane= new HashMap<String,String>();
                 wysyłane.put("S_X",String.valueOf(begin.getLongitude()));
                 wysyłane.put("S_Y",String.valueOf(begin.getLatitude()));
-                wysyłane.put("S_L",String.valueOf(0));
+                wysyłane.put("S_L",String.valueOf((int) Math.round(begin.getAltitude())));
 
                 wysyłane.put("E_X",String.valueOf(end.getLongitude()));
                 wysyłane.put("E_Y",String.valueOf(end.getLatitude()));
@@ -185,16 +185,14 @@ private void addinstruction(Road road,GeoPoint geoPoint,String instruction)
          if(search_angle2(road.mRouteHigh,i)>0)
          {
              if(search_angle(road.mRouteHigh,i)>35 && search_angle(road.mRouteHigh,i)+Math.abs(search_angle2(road.mRouteHigh,i))>160)
-                 addinstruction(road,road.mRouteHigh.get(i-1),"skręć w lewo "+
-                         String.valueOf(search_angle(road.mRouteHigh,i))+" a2:"+String.valueOf(search_angle2(road.mRouteHigh,i)));
+                 addinstruction(road,road.mRouteHigh.get(i-1),"skręć w lewo ");
 
          }
 
          if(search_angle2(road.mRouteHigh,i)<0)
          {
              if(search_angle(road.mRouteHigh,i)>35&&search_angle(road.mRouteHigh,i)+Math.abs(search_angle2(road.mRouteHigh,i))>160)
-                 addinstruction(road,road.mRouteHigh.get(i-1),"skręć w prawo "+
-                         String.valueOf(search_angle(road.mRouteHigh,i))+" a2:"+String.valueOf(search_angle2(road.mRouteHigh,i)));
+                 addinstruction(road,road.mRouteHigh.get(i-1),"skręć w prawo ");
 
          }
          if(road.mRouteHigh.get(i).getAltitude()%1.0>0.3)

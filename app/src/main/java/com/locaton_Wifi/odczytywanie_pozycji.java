@@ -94,7 +94,7 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(kontekst,error.toString(),Toast.LENGTH_LONG).show();
+               /// Toast.makeText(kontekst,error.toString(),Toast.LENGTH_LONG).show();
             }
         }){
             @Override
@@ -123,7 +123,7 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi {
 
         współrzedne.X= XY.getDouble(1);
         współrzedne.Y=XY.getDouble(0);
-        współrzedne.Z=0;
+        współrzedne.Z=XY.getDouble(2);
         zmian_pozycji_wskaźnika(współrzedne);
     }
 

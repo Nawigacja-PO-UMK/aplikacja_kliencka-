@@ -235,7 +235,6 @@ public class activity_Tracking implements Akcje_na_lokacizacji {
     public boolean warunek(android.location.Location location) {
             if (!first_location) {
                 this.location = new GeoPoint(location);
-                this.location.setAltitude(0);
                 first_location = true;
                 time_last_actualization = (new Date()).getTime();
             }
