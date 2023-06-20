@@ -34,7 +34,6 @@ public class WifiMYLocationProvider implements IMyLocationProvider {
 
         sesja=new odczytywanie_pozycji(context,myLocationConsumer,location,uniwersal_location);
         WIFI.Akcje_Wifi(sesja);
-      //  sesja.wysyłanie("[{\"skan\":[{\"Name\":\"eduroam\",\"MAC\":\"00:0c:e6:02:1e:13\",\"RSSI\":-46},{\"Name\":\"eduroam\",\"MAC\":\"00:0c:e6:02:11:15\",\"RSSI\":-47},{\"Name\":\"MW40V_7EAA\",\"MAC\":\"0c:71:8c:2c:7e:aa\",\"RSSI\":-54},{\"Name\":\"konferencja\",\"MAC\":\"00:0c:e6:02:42:01\",\"RSSI\":-70}]}]");
         return true;
     }
 

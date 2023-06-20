@@ -3,6 +3,7 @@ package com.example.nawigacja_po_umk;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.Tracking.activity_Tracking;
 import com.android.volley.toolbox.Volley;
@@ -62,6 +63,7 @@ public class Loader_map implements Akcje_na_lokacizacji {
     @Override
     public void Akcja(Location location)
     {
+       /// Toast.makeText(kontekst, "dział", Toast.LENGTH_SHORT).show();
         this.location.setLocation_builging(true);
         this.oldtracking.setRun(false);
            if (mapa_budynku == null) {

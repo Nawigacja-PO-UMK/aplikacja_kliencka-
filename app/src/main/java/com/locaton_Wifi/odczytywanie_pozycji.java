@@ -68,12 +68,14 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi {
     void odczytaj_pozycje(List<ScanResult> rezultat_saknu)
     {
      String JSON=parsowanie_JSON(rezultat_saknu);
+//        Toast.makeText(kontekst, "dział_na pozomie pozycja "+JSON, Toast.LENGTH_SHORT).show();
      wysyłanie(JSON);
 
     }
 
     public void wysyłanie(String JSON)
     {
+
         ConnectivityManager łączę =(ConnectivityManager) kontekst.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(!(łączę.getActiveNetworkInfo()!=null &&  łączę.getActiveNetworkInfo().isConnected()))
         {
@@ -102,7 +104,7 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi {
             {
                 Map<String,String> wysyłane= new HashMap<String,String>();
 
-                //Toast.makeText(kontekst, JSON, Toast.LENGTH_SHORT).show();
+                Toast.makeText(kontekst, JSON, Toast.LENGTH_SHORT).show();
                 wysyłane.put("skan",JSON);
                 return wysyłane;
             }
@@ -133,10 +135,11 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi {
     {
         JSONArray lista_punktów=new JSONArray();
 
-        JSONObject punkt = new JSONObject();
+
         try {
         for (ScanResult sk: rezultat_saknu) {
-                punkt.put("Name", sk.SSID);
+            JSONObject punkt = new JSONObject();
+            punkt.put("Name", sk.SSID);
             punkt.put("MAC", sk.BSSID);
             punkt.put("RSSI", sk.level);
             lista_punktów.put(punkt);
@@ -173,8 +176,10 @@ public class odczytywanie_pozycji implements Akcje_na_Wifi {
 
     @Override
     public void Wykonywanie_funkcji_wifi(List<ScanResult> rezultat_skanu) {
+        //Toast.makeText(kontekst, "działa na poziomie skanu ", Toast.LENGTH_SHORT).show();
         if((new Date()).getTime()-actual_time>time_scan) {
             odczytaj_pozycje(rezultat_skanu);
+            Toast.makeText(kontekst, "działa na poziomie skanu ", Toast.LENGTH_SHORT).show();
             actual_time=(new Date()).getTime();
         }
     }
